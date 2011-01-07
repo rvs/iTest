@@ -3,12 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cloudera.validation</groupId>
-  <artifactId>meta</artifactId>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>metaTest</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>meta</name>
-  <url>http://maven.apache.org</url>
+  <name>metaTest</name>
 
   <dependencies>
     <dependency>
@@ -18,29 +17,18 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.cloudera.validation</groupId>
-      <artifactId>helloGroovy</artifactId>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>JarRunner</artifactId>
       <version>0.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.cloudera.validation</groupId>
-      <artifactId>helloGroovy</artifactId>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>JarRunner</artifactId>
       <version>0.1.0</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
-    <!--These are some jar files which I have locally-->
-    <dependency>
-      <groupId>com.atlassian.jira</groupId>
-      <artifactId>cli</artifactId>
-      <version>1.5.0</version>
-      <scope>system</scope>
-      <systemPath>
-        ${env.HOME}/bin/jira-cli-1.5.0/release/jira-cli-1.5.0.jar
-      </systemPath>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -83,7 +71,7 @@
             <configuration>
               <properties>
                 <jar>
-                  ${env.HOME}/bin/jira-cli-1.5.0/release/jira-cli-1.5.0.jar
+                  ${env.JAVA_HOME}/lib/tools.jar
                 </jar>
               </properties>
               <source>

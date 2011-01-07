@@ -1,1 +1,0 @@
-/home/cos/work/gr.cli/src/jira.groovy

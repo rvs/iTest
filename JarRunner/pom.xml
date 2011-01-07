@@ -7,9 +7,9 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.cloudera.validation</groupId>
-  <artifactId>helloGroovy</artifactId>
-  <name>Example Project</name>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>JarRunner</artifactId>
+  <name>Project addresses the ways of running integration tests from extern Mvn artifacts.</name>
   <version>0.1.0</version>
 
   <dependencies>
@@ -60,6 +60,7 @@
       </plugin>
     </plugins>
   </build>
+
   <distributionManagement>
     <!-- use the following if you ARE using a snapshot version. -->
     <repository>
