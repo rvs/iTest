@@ -1,4 +1,4 @@
-package com.cloudera.validation
+package com.cloudera.itest
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

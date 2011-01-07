@@ -2,7 +2,7 @@
 // Generated from archetype; please customize.
 //
 
-package com.cloudera.validation;
+package com.cloudera.itest;
 
 /**
  * Example Java class.

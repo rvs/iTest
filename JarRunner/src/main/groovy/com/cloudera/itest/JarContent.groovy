@@ -1,8 +1,7 @@
-package com.cloudera.validation
+package com.cloudera.itest
 
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
-import java.util.regex.Pattern
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

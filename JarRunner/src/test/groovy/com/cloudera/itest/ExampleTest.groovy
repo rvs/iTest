@@ -2,9 +2,7 @@
 // Generated from archetype; please customize.
 //
 
-package com.cloudera.validation
-
-import groovy.util.GroovyTestCase
+package com.cloudera.itest
 
 /**
  * Tests for the {@link Example} class.
