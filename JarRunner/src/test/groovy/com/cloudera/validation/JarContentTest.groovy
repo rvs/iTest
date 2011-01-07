@@ -19,8 +19,9 @@ package com.cloudera.validation
  */
 class JarContentTest extends GroovyTestCase {
   void testJarContent() {
+    def env = System.getenv();
     JarContent jr = new JarContent();
-    jr.listContent('/home/cos/bin/jira-cli-1.5.0/release/jira-cli-1.5.0.jar').each {
+    jr.listContent(env['JAVA_HOME'] + '/lib/tools.jar').each {
       println it;
     };
   }
