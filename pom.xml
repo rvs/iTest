@@ -39,8 +39,12 @@
         <version>2.7.1</version>
         <configuration>
           <excludes>
-            <exclude>**/Helper*</exclude>
+            <exclude>**/AppTest*</exclude>
+            <exclude>**/JarContentTest*</exclude>
           </excludes>
+          <includes>
+            <include>**/*Test*</include>
+          </includes>
         </configuration>
         <executions>
           <execution>
@@ -64,21 +68,39 @@
         <executions>
           <execution>
             <id>check-testslist</id>
-            <phase>test-compile</phase>
+            <phase>pre-integration-test</phase>
             <goals>
               <goal>execute</goal>
             </goals>
             <configuration>
               <properties>
                 <jar>
-                  ${env.JAVA_HOME}/lib/tools.jar
+                  ${env.HOME}/.m2/repository/com/cloudera/itest/JarRunner/0.1.0/JarRunner-0.1.0-tests.jar
                 </jar>
+                <destination>${pom.build.testOutputDirectory}</destination>
               </properties>
               <source>
-                import com.cloudera.validation.JarContent
+                import com.cloudera.itest.JarContent
+
                 JarContent jar = new JarContent();
+                static final def FS=System.getProperty('file.separator', '/');
+
+                def prefix = project.properties['destination'] + FS;
+                if ( prefix.equals('/') ) prefix = "";
                 jar.listContent(project.properties['jar']).each {
-                  println it
+                  def name=it
+                  println name
+
+                  pathArray = name.split(FS).toList();
+
+                  String fileName = pathArray.remove(pathArray.size()-1).replaceAll('.class', '.touched')
+                  String dirName = prefix + FS + pathArray.join(FS)
+                  File dir = new File(dirName);
+                  File file = new File(dirName, fileName);
+
+                  dir.mkdirs();
+                  file.createNewFile();
+                  assert file.exists();
                 };
               </source>
             </configuration>
