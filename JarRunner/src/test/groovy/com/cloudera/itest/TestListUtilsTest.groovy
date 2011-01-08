@@ -17,30 +17,12 @@ package com.cloudera.itest
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TestListUtils {
+public class TestListUtilsTest extends GroovyTestCase {
 
-  /**
-   * Touching files to force Surefire plugin to pick them up
-   * @param pathName
-   * @throws IOException
-   */
-  static final def FS = System.getProperty('file.separator', '/');
-
-  static void touchTestFiles(String dirPrefix, String pathName) throws IOException {
-    List<String> pathArray = pathName.split(FS).toList();
-    def prefix =  "";
-    if (dirPrefix != null)
-      prefix = dirPrefix;
-
-    String fileName =
-      pathArray.remove(pathArray.size() - 1).replaceAll('.class', '.touched')
-    String dirName = prefix + FS + pathArray.join(FS)
-
-    File dir = new File(dirName);
-    dir.mkdirs();
-    File file = new File(dirName, fileName);
-    file.createNewFile();
-
-    assert file.exists();
+  void testListUtils() {
+    def prefix = 'tmp'
+    TestListUtils.touchTestFiles(prefix, 'dir/under/which/file/created.class');
+    File p = new File(prefix);
+    p.deleteDir();
   }
 }
