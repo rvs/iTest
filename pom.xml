@@ -80,27 +80,13 @@
                 <destination>${pom.build.testOutputDirectory}</destination>
               </properties>
               <source>
-                import com.cloudera.itest.JarContent
+                import com.cloudera.itest.*
 
                 JarContent jar = new JarContent();
-                static final def FS=System.getProperty('file.separator', '/');
-
-                def prefix = project.properties['destination'] + FS;
-                if ( prefix.equals('/') ) prefix = "";
+                def prefix = project.properties['destination'];
+                <!--print 'generate here ' + prefix-->
                 jar.listContent(project.properties['jar']).each {
-                  def name=it
-                  println name
-
-                  pathArray = name.split(FS).toList();
-
-                  String fileName = pathArray.remove(pathArray.size()-1).replaceAll('.class', '.touched')
-                  String dirName = prefix + FS + pathArray.join(FS)
-                  File dir = new File(dirName);
-                  File file = new File(dirName, fileName);
-
-                  dir.mkdirs();
-                  file.createNewFile();
-                  assert file.exists();
+                  TestListUtils.touchTestFiles(prefix, it);
                 };
               </source>
             </configuration>
