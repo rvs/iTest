@@ -11,14 +11,14 @@
 
   <repositories>
     <repository>
-      <id>snapshots</id>
-      <name>Cloudera Sandbox</name>
-      <url>https://repository.cloudera.com/content/repositories/snapshots/</url>
-    </repository>
-    <repository>
       <id>testsnaps</id>
       <name>Cloudera Sandbox</name>
       <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
     </repository>
   </repositories>
 
