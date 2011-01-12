@@ -39,6 +39,30 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.pig</groupId>
+                  <artifactId>pigsmoke</artifactId>
+                  <version>0.8.0-SNAPSHOT</version>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <includes>test/data/**/*</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.7.1</version>
         <configuration>
@@ -50,7 +74,7 @@
             <include>**/Test*</include>
           </includes>
           <forkMode>always</forkMode>
-          <workingDirectory>target</workingDirectory>
+          <workingDirectory>${project.build.directory}</workingDirectory>
           <argLine>-Dpigunit.exectype.cluster=true</argLine>
           <additionalClasspathElements>
             <additionalClasspathElement>${env.HADOOP_CONF_DIR}</additionalClasspathElement>
