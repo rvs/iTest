@@ -9,6 +9,19 @@
   <version>1.0-SNAPSHOT</version>
   <name>metaTest</name>
 
+  <repositories>
+    <repository>
+      <id>snapshots</id>
+      <name>Cloudera Sandbox</name>
+      <url>https://repository.cloudera.com/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>testsnaps</id>
+      <name>Cloudera Sandbox</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
