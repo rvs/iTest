@@ -137,9 +137,9 @@
   <distributionManagement>
     <!-- use the following if you ARE using a snapshot version. -->
     <snapshotRepository>
-      <id>snapshots</id>
-      <name>Cloudera Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/snapshots/</url>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
