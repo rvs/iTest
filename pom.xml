@@ -12,7 +12,7 @@
   <repositories>
     <repository>
       <id>testsnaps</id>
-      <name>Cloudera Sandbox</name>
+      <name>Test Snapshots</name>
       <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
     </repository>
     <repository>
@@ -80,7 +80,6 @@
         <version>2.7.1</version>
         <configuration>
           <excludes>
-            <exclude>**/AppTest*</exclude>
             <exclude>**/JarContentTest*</exclude>
           </excludes>
           <includes>
