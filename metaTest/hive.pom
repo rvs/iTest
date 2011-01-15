@@ -105,7 +105,7 @@
                   <version>1.0-SNAPSHOT</version>
                   <classifier>tests</classifier>
                   <outputDirectory>${project.build.directory}</outputDirectory>
-                  <includes>test/data/**/*</includes>
+                  <includes>**/*.hql</includes>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -133,9 +133,11 @@
           </includes>
           <systemPropertyVariables>
             <hive.script>
-              ${project.build.directory}/test/data/${hive.script.name}
+              ${project.build.directory}/${hive.script.name}
             </hive.script>
           </systemPropertyVariables>
+          <forkMode>always</forkMode>
+          <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
         <executions>
           <execution>
