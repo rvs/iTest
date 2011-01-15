@@ -15,6 +15,19 @@
     <hive.script.name>test.hql</hive.script.name>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.cloudera.itest</groupId>
