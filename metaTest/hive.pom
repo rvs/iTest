@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>hivesmoke-test</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <hive.data.url>http://www.grouplens.org/system/files/</hive.data.url>
+    <hive.data.tarball>ml-data.tar__0.gz</hive.data.tarball>
+    <hive.data.dir>ml-data</hive.data.dir>
+    <hive.script.name>test.hql</hive.script.name>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>JarRunner</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy.maven.runtime</groupId>
+      <artifactId>gmaven-runtime-1.6</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>hivesmoke</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <id>prepare</id>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <tasks>
+                <echo message="downloading and unzipping data..."/>
+                <!--<get src="${hive.data.url}/${hive.data.tarball}"-->
+                <!--dest="${project.build.directory}/${hive.data.tarball}"/>-->
+                <!--<untar src="${project.build.directory}/${hive.data.tarball}"-->
+                <!--dest="${project.build.directory}/"-->
+                <!--compression="gzip"/>-->
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.cloudera.itest</groupId>
+                  <artifactId>hivesmoke</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                  <classifier>tests</classifier>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <includes>test/data/**/*</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--Let's skip unit tests all together for there are none-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <includes>
+            <include>**/Test*</include>
+          </includes>
+          <systemPropertyVariables>
+            <hive.script>
+              ${project.build.directory}/test/data/${hive.script.name}
+            </hive.script>
+          </systemPropertyVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This is were actual preparation is started-->
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>check-testslist</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <properties>
+                <jar>
+                  ${env.HOME}/.m2/repository/com/cloudera/itest/hivesmoke/1.0-SNAPSHOT/hivesmoke-1.0-SNAPSHOT-tests.jar
+                </jar>
+                <destination>${project.build.testOutputDirectory}</destination>
+              </properties>
+              <source>
+                import com.cloudera.itest.*
+
+                JarContent jar = new JarContent();
+                def prefix = project.properties['destination'];
+                <!--print 'generate here ' + prefix-->
+                jar.listContent(project.properties['jar']).each {
+                TestListUtils.touchTestFiles(prefix, it);
+                };
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
