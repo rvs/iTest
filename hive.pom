@@ -60,11 +60,11 @@
             <configuration>
               <tasks>
                 <echo message="downloading and unzipping data..."/>
-                <!--<get src="${hive.data.url}/${hive.data.tarball}"-->
-                <!--dest="${project.build.directory}/${hive.data.tarball}"/>-->
-                <!--<untar src="${project.build.directory}/${hive.data.tarball}"-->
-                <!--dest="${project.build.directory}/"-->
-                <!--compression="gzip"/>-->
+                <get src="${hive.data.url}/${hive.data.tarball}"
+                dest="${project.build.directory}/${hive.data.tarball}"/>
+                <untar src="${project.build.directory}/${hive.data.tarball}"
+                dest="${project.build.directory}/"
+                compression="gzip"/>
               </tasks>
             </configuration>
             <goals>
