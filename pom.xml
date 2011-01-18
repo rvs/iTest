@@ -107,6 +107,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
@@ -126,7 +127,9 @@
               ${HADOOP_CONF_DIR}
             </additionalClasspathElement>
             <additionalClasspathElement>
-              ${HADOOP_HOME}/lib/hadoop-lzo-20101122174751.20101122171345.552b3f9.jar
+              <!-- the value of ${lzo.jar} property is set by a groovy
+                   script during pre-integration-test phase below-->
+              ${HADOOP_HOME}/lib/${lzo.jar}
             </additionalClasspathElement>
           </additionalClasspathElements>
 
@@ -152,6 +155,21 @@
         <artifactId>gmaven-plugin</artifactId>
         <version>1.0</version>
         <executions>
+          <execution>
+            <id>find-lzo-jar</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                <!-- this hack-around is needed until DISTRO-75 isn't fixed -->
+                project.properties['lzo.jar'] = new File("${HADOOP_HOME}/lib").list(
+                  [accept:{d, f-> f ==~ /hadoop.*lzo.*.jar/ }] as FilenameFilter
+                ).toList().get(0);
+              </source>
+            </configuration>
+          </execution>
           <execution>
             <id>check-testslist</id>
             <phase>pre-integration-test</phase>
