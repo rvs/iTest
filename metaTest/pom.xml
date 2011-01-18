@@ -9,6 +9,12 @@
   <version>1.0-SNAPSHOT</version>
   <name>metaTest</name>
 
+  <properties>
+    <!-- Making sure that we have proper variables to modify CLASSPATH -->
+    <HADOOP_HOME>${env.HADOOP_HOME}</HADOOP_HOME>
+    <HADOOP_CONF_DIR>${env.HADOOP_CONF_DIR}</HADOOP_CONF_DIR>
+  </properties>
+
   <repositories>
     <repository>
       <id>testsnaps</id>
@@ -52,6 +58,33 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>enforce-property</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireProperty>
+                  <property>HADOOP_CONF_DIR</property>
+                  <message>HADOOP_CONF_DIR env. variable has to be set</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>HADOOP_HOME</property>
+                  <message>HADOOP_HOME env. variable has to be set</message>
+                </requireProperty>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
@@ -89,9 +122,11 @@
           <workingDirectory>${project.build.directory}</workingDirectory>
           <argLine>-Dpigunit.exectype.cluster=true</argLine>
           <additionalClasspathElements>
-            <additionalClasspathElement>${env.HADOOP_CONF_DIR}</additionalClasspathElement>
             <additionalClasspathElement>
-              ${env.HADOOP_HOME}/lib/hadoop-lzo-20101122174751.20101122171345.552b3f9.jar
+              ${HADOOP_CONF_DIR}
+            </additionalClasspathElement>
+            <additionalClasspathElement>
+              ${HADOOP_HOME}/lib/hadoop-lzo-20101122174751.20101122171345.552b3f9.jar
             </additionalClasspathElement>
           </additionalClasspathElements>
 
@@ -137,7 +172,7 @@
                 def prefix = project.properties['destination'];
                 <!--print 'generate here ' + prefix-->
                 jar.listContent(project.properties['jar']).each {
-                  TestListUtils.touchTestFiles(prefix, it);
+                TestListUtils.touchTestFiles(prefix, it);
                 };
               </source>
             </configuration>
