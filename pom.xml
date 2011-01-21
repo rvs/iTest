@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>smoke-tests</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>metaTest</name>
+
+  <properties>
+    <!-- Making sure that we have proper variables to modify CLASSPATH -->
+    <HADOOP_HOME>${env.HADOOP_HOME}</HADOOP_HOME>
+    <HADOOP_CONF_DIR>${env.HADOOP_CONF_DIR}</HADOOP_CONF_DIR>
+    <pig.jar.copy>${project.build.directory}/pig.jar</pig.jar.copy>
+    <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+  </repositories>
+
+  <modules>
+    <module>pig</module>
+    <module>hive</module>
+  </modules>
+
+  <dependencies>
+  </dependencies>
+
+  <build>
+  </build>
+
+</project>
