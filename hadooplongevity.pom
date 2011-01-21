@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>hadooplong-test</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <hadooplong.copy>${project.build.directory}/hadooplong.jar</hadooplong.copy>
+    <hadooplong.ver>1.0-SNAPSHOT</hadooplong.ver>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>JarRunner</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy.maven.runtime</groupId>
+      <artifactId>gmaven-runtime-1.6</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>hadooplong</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <!--Let's skip unit tests all together for there are none-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <includes>
+            <include>**/Test*</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy the test artifacts so it is easier to deal with it-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-pig-jar</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.cloudera.itest</groupId>
+                  <artifactId>hadooplong</artifactId>
+                  <type>test-jar</type>
+                  <outputDirectory>${hadooplong.copy}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This is were actual preparation is started -->
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>check-testslist</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <properties>
+                <jar>
+                  ${hadooplong.copy}/hadooplong-${hadooplong.ver}-tests.jar
+                </jar>
+                <destination>${project.build.testOutputDirectory}</destination>
+              </properties>
+              <source>
+                import com.cloudera.itest.*
+
+                println 'Opening ' + project.properties['jar'];
+                JarContent jar = new JarContent();
+                def prefix = project.properties['destination'];
+                <!--print 'generate here ' + prefix-->
+                jar.listContent(project.properties['jar']).each {
+                TestListUtils.touchTestFiles(prefix, it);
+                };
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
