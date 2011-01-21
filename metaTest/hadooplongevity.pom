@@ -101,7 +101,7 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-pig-jar</id>
+            <id>copy-test-jar</id>
             <phase>generate-test-resources</phase>
             <goals>
               <goal>copy</goal>
