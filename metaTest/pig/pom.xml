@@ -4,10 +4,10 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudera.itest</groupId>
-  <artifactId>metaTest</artifactId>
+  <artifactId>pigsmokes</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>metaTest</name>
+  <name>pigsmokes</name>
 
   <properties>
     <!-- Making sure that we have proper variables to modify CLASSPATH -->
@@ -217,12 +217,4 @@
       </plugin>
     </plugins>
   </build>
-  <distributionManagement>
-    <!-- use the following if you ARE using a snapshot version. -->
-    <snapshotRepository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
