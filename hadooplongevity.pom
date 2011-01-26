@@ -43,31 +43,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.7.1</version>
-        <configuration>
-          <includes>
-            <include>**/Test*</include>
-          </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify</id>
-            <goals>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- Copy the test artifacts so it is easier to deal with it-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

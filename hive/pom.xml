@@ -103,31 +103,13 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.7.1</version>
         <configuration>
-          <includes>
-            <include>**/Test*</include>
-          </includes>
           <systemPropertyVariables>
             <hive.script>
               ${project.build.directory}/${hive.script.name}
             </hive.script>
           </systemPropertyVariables>
           <forkMode>always</forkMode>
-          <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify</id>
-            <goals>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <!-- This is were actual preparation is started-->
