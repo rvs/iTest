@@ -142,10 +142,8 @@
               <source>
                 import com.cloudera.itest.*
 
-                println 'Opening ' + project.properties['jar'];
                 JarContent jar = new JarContent();
                 def prefix = project.properties['destination'];
-                <!--print 'generate here ' + prefix-->
                 jar.listContent(project.properties['jar']).each {
                 TestListUtils.touchTestFiles(prefix, it);
                 };
