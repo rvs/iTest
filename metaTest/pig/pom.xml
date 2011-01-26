@@ -127,11 +127,7 @@
           <excludes>
             <exclude>**/JarContentTest*</exclude>
           </excludes>
-          <includes>
-            <include>**/Test*</include>
-          </includes>
           <forkMode>always</forkMode>
-          <workingDirectory>${project.build.directory}</workingDirectory>
           <argLine>-Dpigunit.exectype.cluster=true</argLine>
           <additionalClasspathElements>
             <additionalClasspathElement>
@@ -143,22 +139,7 @@
               ${HADOOP_HOME}/lib/${lzo.jar}
             </additionalClasspathElement>
           </additionalClasspathElements>
-
         </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify</id>
-            <goals>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
