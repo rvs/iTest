@@ -33,6 +33,7 @@
   <modules>
     <module>pig</module>
     <module>hive</module>
+    <module>hadoop</module>
   </modules>
 
   <dependencies>
