@@ -20,6 +20,8 @@
     <HADOOP_CONF_DIR>${env.HADOOP_CONF_DIR}</HADOOP_CONF_DIR>
     <pig.jar.copy>${project.build.directory}/pig.jar</pig.jar.copy>
     <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${pig.jar.copy}/pigsmoke-${pig.smoke.version}.jar</org.codehaus.groovy.maven.jar>
   </properties>
 
   <repositories>
@@ -159,30 +161,6 @@
                 project.properties['lzo.jar'] = new File("${HADOOP_HOME}/lib").list(
                   [accept:{d, f-> f ==~ /hadoop.*lzo.*.jar/ }] as FilenameFilter
                 ).toList().get(0);
-              </source>
-            </configuration>
-          </execution>
-          <execution>
-            <id>check-testslist</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <properties>
-                <jar>
-                  ${pig.jar.copy}/pigsmoke-${pig.smoke.version}.jar
-                </jar>
-                <destination>${project.build.testOutputDirectory}</destination>
-              </properties>
-              <source>
-                import com.cloudera.itest.*
-
-                JarContent jar = new JarContent();
-                def prefix = project.properties['destination'];
-                jar.listContent(project.properties['jar']).each {
-                TestListUtils.touchTestFiles(prefix, it);
-                };
               </source>
             </configuration>
           </execution>

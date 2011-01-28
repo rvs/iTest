@@ -16,6 +16,8 @@
   <properties>
     <hadooplong.copy>${project.build.directory}/hadooplong.jar</hadooplong.copy>
     <hadooplong.ver>1.0-SNAPSHOT</hadooplong.ver>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${hadooplong.copy}/hadooplong-${hadooplong.ver}-tests.jar</org.codehaus.groovy.maven.jar>
   </properties>
 
   <repositories>
@@ -63,39 +65,6 @@
                   <outputDirectory>${hadooplong.copy}</outputDirectory>
                 </artifactItem>
               </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- This is were actual preparation is started -->
-      <plugin>
-        <groupId>org.codehaus.groovy.maven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>check-testslist</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <properties>
-                <jar>
-                  ${hadooplong.copy}/hadooplong-${hadooplong.ver}-tests.jar
-                </jar>
-                <destination>${project.build.testOutputDirectory}</destination>
-              </properties>
-              <source>
-                import com.cloudera.itest.*
-
-                JarContent jar = new JarContent();
-                def prefix = project.properties['destination'];
-                jar.listContent(project.properties['jar']).each {
-                TestListUtils.touchTestFiles(prefix, it);
-                };
-              </source>
             </configuration>
           </execution>
         </executions>
