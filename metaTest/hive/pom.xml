@@ -19,6 +19,8 @@
     <hive.data.tarball>ml-data.tar__0.gz</hive.data.tarball>
     <hive.data.dir>ml-data</hive.data.dir>
     <hive.script.name>test.hql</hive.script.name>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${env.HOME}/.m2/repository/com/cloudera/itest/hivesmoke/1.0-SNAPSHOT/hivesmoke-1.0-SNAPSHOT-tests.jar</org.codehaus.groovy.maven.jar>
   </properties>
 
   <repositories>
@@ -110,39 +112,6 @@
           </systemPropertyVariables>
           <forkMode>always</forkMode>
         </configuration>
-      </plugin>
-
-      <!-- This is were actual preparation is started-->
-      <plugin>
-        <groupId>org.codehaus.groovy.maven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>check-testslist</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <properties>
-                <jar>
-                  ${env.HOME}/.m2/repository/com/cloudera/itest/hivesmoke/1.0-SNAPSHOT/hivesmoke-1.0-SNAPSHOT-tests.jar
-                </jar>
-                <destination>${project.build.testOutputDirectory}</destination>
-              </properties>
-              <source>
-                import com.cloudera.itest.*
-
-                JarContent jar = new JarContent();
-                def prefix = project.properties['destination'];
-                jar.listContent(project.properties['jar']).each {
-                TestListUtils.touchTestFiles(prefix, it);
-                };
-              </source>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
     </plugins>

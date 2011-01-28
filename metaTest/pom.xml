@@ -103,6 +103,37 @@
         </executions>
       </plugin>
 
+      <!-- This is were actual preparation is started -->
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>check-testslist</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source><![CDATA[
+                import com.cloudera.itest.*
+
+                if (project.properties['org.codehaus.groovy.maven.destination'] &&
+                    project.properties['org.codehaus.groovy.maven.jar']) {
+                     JarContent jar = new JarContent();
+                     def prefix = project.properties['org.codehaus.groovy.maven.destination'];
+                     jar.listContent(project.properties['org.codehaus.groovy.maven.jar']).each {
+                     TestListUtils.touchTestFiles(prefix, it);
+                     };
+                }]]>
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
     </plugins>
   </build>
 
