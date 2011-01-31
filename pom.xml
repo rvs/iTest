@@ -121,9 +121,8 @@
 
                 if (project.properties['org.codehaus.groovy.maven.destination'] &&
                     project.properties['org.codehaus.groovy.maven.jar']) {
-                     JarContent jar = new JarContent();
                      def prefix = project.properties['org.codehaus.groovy.maven.destination'];
-                     jar.listContent(project.properties['org.codehaus.groovy.maven.jar']).each {
+                     JarContent.listContent(project.properties['org.codehaus.groovy.maven.jar']).each {
                      TestListUtils.touchTestFiles(prefix, it);
                      };
                 }]]>
