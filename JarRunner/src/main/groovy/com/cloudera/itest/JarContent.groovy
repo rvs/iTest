@@ -96,7 +96,7 @@ public abstract class JarContent {
 
   /**
    * Finds JAR URL of an object's class belongs to
-   * @param ref is Class reference
+   * @param ref Class reference of a class belongs to a jar file
    * @return JAR URL or <code>null</code> if class doesn't belong
    * to a JAR in the classpath
    */
@@ -125,24 +125,48 @@ public abstract class JarContent {
    * @throws ClassNotFoundException if class specified by className wasn't found
    */
   public static URL getJarURL(String className) throws ClassNotFoundException {
-    Class cl
-    cl = Class.forName(className)
+    Class cl = Class.forName(className)
     return getJarURL(cl)
+  }
+
+  /**
+   * Finds and unpack a jar file by locating to what jar file a given class belongs
+   * and unpacking jar content to desalination according to given includes
+   * @param ref
+   * @param destination
+   * @param includes
+   * @return true if unpacked successfully, false otherwise
+   */
+  public static boolean unpackJarContainer (Class ref,
+    String destination, String includes) {
+    URL connection = JarContent.getJarURL(ref);
+    if (connection == null) {
+      return false;
+    }
+    ZipInputStream fis =
+      new ZipInputStream(connection.openConnection().getInputStream());
+    fis.unzip (destination, includes);
+    return true;
+  }
+
+  public static boolean unpackJarContainer (String className,
+    String destination, String includes) {
+    Class cl = Class.forName(className)
+    return unpackJarContainer (cl, destination, includes)
   }
 
   private static void bootstrapPlugins() {
     /**
-     * Adding an ability to treat a content of an given InputStream as an
-     * ZipInputStream and unpack its content to specified destination with given
-     * pattern
+     * Adding an ability to uppack a content of an given ZipInputStream
+     * to specified destination with given pattern
      * @param dest directory where the content will be unpacked
      * @param includes regexps to include resources to be unpacked
      */
-    InputStream.metaClass.unzip = { String dest, String includes ->
+    ZipInputStream.metaClass.unzip = { String dest, String includes ->
       //in metaclass added methods, 'delegate' is the object on which
       //the method is called. Here it's the file to unzip
       if (includes == null) includes = "";
-      def result = new ZipInputStream(delegate)
+      def result = delegate
       def destFile = new File(dest)
       if (!destFile.exists()) {
         destFile.mkdir();
@@ -158,7 +182,7 @@ public abstract class JarContent {
             def output = new FileOutputStream(dest + File.separator
                 + entry.name)
             output.withStream {
-              int len = 0;
+              int len;
               byte[] buffer = new byte[4096]
               while ((len = result.read(buffer)) > 0) {
                 output.write(buffer, 0, len);

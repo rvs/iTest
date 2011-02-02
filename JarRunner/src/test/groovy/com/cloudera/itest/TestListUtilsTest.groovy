@@ -1,5 +1,7 @@
 package com.cloudera.itest
 
+import org.junit.Test
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,8 +19,8 @@ package com.cloudera.itest
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TestListUtilsTest extends GroovyTestCase {
-
+public class TestListUtilsTest {
+  @Test
   void testListUtils() {
     def prefix = 'tmp'
     TestListUtils.touchTestFiles(prefix, 'dir/under/which/file/created.class');
