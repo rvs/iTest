@@ -1,6 +1,7 @@
-package com.cloudera.itest
+package org.apache.itest
 
 import org.junit.Test
+import org.apache.itest.TestListUtils
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

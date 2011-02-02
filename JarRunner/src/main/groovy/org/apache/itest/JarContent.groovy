@@ -1,4 +1,4 @@
-package com.cloudera.itest
+package org.apache.itest
 
 import java.util.jar.JarEntry
 import java.util.jar.JarFile

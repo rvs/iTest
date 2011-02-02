@@ -3,13 +3,17 @@
    Generated from archetype; please customize.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.cloudera.itest</groupId>
-  <artifactId>JarRunner</artifactId>
-  <name>Project addresses the ways of running integration tests from external Mvn artifacts.</name>
+  <groupId>org.apache.itest</groupId>
+  <artifactId>itest-common</artifactId>
+  <name>Project addresses the ways of running integration tests from external
+    Mvn artifacts.
+  </name>
   <version>1.0-SNAPSHOT</version>
 
   <dependencies>
@@ -18,7 +22,7 @@
       <artifactId>gmaven-runtime-1.6</artifactId>
       <version>1.0</version>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -29,6 +33,14 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.groovy.maven</groupId>
         <artifactId>gmaven-plugin</artifactId>
@@ -52,7 +64,7 @@
         <executions>
           <execution>
             <goals>
-	      <!-- Make sure that test artifacts is being deployed as well -->
+              <!-- Make sure that test artifacts is being deployed as well -->
               <goal>test-jar</goal>
             </goals>
           </execution>

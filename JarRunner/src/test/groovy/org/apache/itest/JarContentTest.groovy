@@ -1,8 +1,7 @@
-package com.cloudera.itest
+package org.apache.itest
 
 import org.junit.Test
 import static org.junit.Assert.assertTrue
-import org.junit.rules.ExpectedException
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
