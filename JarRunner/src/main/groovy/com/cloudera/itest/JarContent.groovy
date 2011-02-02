@@ -20,17 +20,16 @@ import java.util.jar.JarFile
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class JarContent {
-  def List<String> patterns = new ArrayList<String>();
-  def List<String> content = new ArrayList<String>();
+public abstract class JarContent {
+  private static List<String> patterns = null;
+  private static List<String> content = null;
   // Exclude META* and inner classes
-  def defaultExclPattern = [ '.*META.*', '.*\\$.*.class' ]
+  def static defaultExclPattern = [ '.*META.*', '.*\\$.*.class' ]
 
-
-  def List<String> listContent(String jarFileName) throws IOException {
+  def static List<String> listContent(String jarFileName) throws IOException {
+    content = new ArrayList<String>();
     if (jarFileName == null) {
-      System.out.println("Specify a jar file name");
-      System.exit(1);
+      throw new IOException("Specify a jar file name");
     }
     JarFile jarFile = new JarFile(jarFileName);
 
@@ -53,14 +52,18 @@ class JarContent {
     return null;
   }
 
-  def List<String> getPatterns() {
-    return patterns;
-  }
-
-  def setPatterns(List<String> filterPatters) {
+  /**
+   * Set a list of new patterns to be applied in the processing of a jar file
+   * @param filterPatters list of pattern strings
+   * @return list of currently set patterns. Next call of this method will
+   * reset the content of patterns' list.
+   */
+  def static List<String> setPatterns(List<String> filterPatters) {
+    patterns = new ArrayList<String>();
     filterPatters.each {
       patterns.add(it);
     }
+    return patterns;
   }
 
   /**
@@ -69,7 +72,7 @@ class JarContent {
    * @param filters list of patterns
    * @return filtered-out list of entries
    */
-  def List<String> applyExcludeFilter(final List<String> list, final List<String> filters) {
+  def static List<String> applyExcludeFilter(final List<String> list, final List<String> filters) {
     List<String> filtered = list.asList();
     ArrayList<String> toRemove = new ArrayList<String>();
 

@@ -9,7 +9,7 @@
 
   <groupId>com.cloudera.itest</groupId>
   <artifactId>JarRunner</artifactId>
-  <name>Project addresses the ways of running integration tests from extern Mvn artifacts.</name>
+  <name>Project addresses the ways of running integration tests from external Mvn artifacts.</name>
   <version>1.0-SNAPSHOT</version>
 
   <dependencies>

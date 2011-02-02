@@ -20,8 +20,7 @@ package com.cloudera.itest
 class JarContentTest extends GroovyTestCase {
   void testJarContent() {
     def env = System.getenv();
-    JarContent jr = new JarContent();
-    jr.listContent(env['JAVA_HOME'] + '/lib/tools.jar').each {
+    JarContent.listContent(env['JAVA_HOME'] + '/lib/tools.jar').each {
       println it;
     };
   }
