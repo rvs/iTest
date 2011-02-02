@@ -22,6 +22,12 @@
     <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${pig.jar.copy}/pigsmoke-${pig.smoke.version}.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>org.apache.pig</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>pigsmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>${pig.smoke.version}</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.output>${pig.jar.copy}</org.apache.maven-dependency-plugin.output>
+    <org.apache.maven-dependency-plugin.pattern>test/data/**/*</org.apache.maven-dependency-plugin.pattern>
   </properties>
 
   <repositories>
@@ -52,6 +58,55 @@
   </dependencies>
 
   <build>
+
+    <!-- FIXME: https://issues.apache.org/jira/browse/PIG-1840 -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>copy</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>org.apache.pig</groupId>
+                    <artifactId>pigsmoke</artifactId>
+                    <type>jar</type>
+                    <outputDirectory>${pig.jar.copy}</outputDirectory>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+            <execution>
+              <id>unpack-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>unpack</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>org.apache.pig</groupId>
+                    <artifactId>pigsmoke</artifactId>
+                    <version>${pig.smoke.version}</version>
+                    <type>jar</type>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <includes>test/data/**/*</includes>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+          </executions>
+         </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -83,42 +138,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-pig-jar</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.pig</groupId>
-                  <artifactId>pigsmoke</artifactId>
-                  <outputDirectory>${pig.jar.copy}</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.pig</groupId>
-                  <artifactId>pigsmoke</artifactId>
-                  <version>${pig.smoke.version}</version>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <includes>test/data/**/*</includes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

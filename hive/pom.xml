@@ -21,6 +21,12 @@
     <hive.script.name>test.hql</hive.script.name>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${env.HOME}/.m2/repository/com/cloudera/itest/hivesmoke/1.0-SNAPSHOT/hivesmoke-1.0-SNAPSHOT-tests.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>hivesmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>1.0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
+    <org.apache.maven-dependency-plugin.pattern>**/*.hql</org.apache.maven-dependency-plugin.pattern>
   </properties>
 
   <repositories>
@@ -77,27 +83,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>com.cloudera.itest</groupId>
-                  <artifactId>hivesmoke</artifactId>
-                  <version>1.0-SNAPSHOT</version>
-                  <classifier>tests</classifier>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <includes>**/*.hql</includes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

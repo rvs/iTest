@@ -131,9 +131,56 @@
           </execution>
         </executions>
       </plugin>
-
-
     </plugins>
-  </build>
 
+    <!-- The following plugins must be enabled inside modules in order to work -->
+    <pluginManagement>
+      <plugins>
+        <!-- Copy the test artifacts so it is easier to deal with it-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>copy</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>${org.apache.maven-dependency-plugin.groupId}</groupId>
+                    <artifactId>${org.apache.maven-dependency-plugin.artifactId}</artifactId>
+                    <version>${org.apache.maven-dependency-plugin.version}</version>
+                    <type>test-jar</type>
+                    <outputDirectory>${org.apache.maven-dependency-plugin.output}</outputDirectory>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+            <execution>
+              <id>unpack-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>unpack</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>${org.apache.maven-dependency-plugin.groupId}</groupId>
+                    <artifactId>${org.apache.maven-dependency-plugin.artifactId}</artifactId>
+                    <version>${org.apache.maven-dependency-plugin.version}</version>
+                    <type>test-jar</type>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <includes>${org.apache.maven-dependency-plugin.pattern}</includes>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

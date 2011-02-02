@@ -19,6 +19,12 @@
     <hadoopsmoke.ver>1.0-SNAPSHOT</hadoopsmoke.ver>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${hadoopsmoke.copy}/hadoopsmoke-${hadoopsmoke.ver}-tests.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>hadoopsmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>${hadoopsmoke.ver}</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.output>${hadoopsmoke.copy}</org.apache.maven-dependency-plugin.output>
+    <org.apache.maven-dependency-plugin.pattern>**/*</org.apache.maven-dependency-plugin.pattern>
   </properties>
 
   <dependencies>
@@ -45,48 +51,12 @@
         </configuration>
       </plugin>
 
-      <!-- Copy the test artifacts so it is easier to deal with it-->
+      <!-- Enabling dependency plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-hadoopsmoke-jar</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>com.cloudera.itest</groupId>
-                  <artifactId>hadoopsmoke</artifactId>
-                  <type>test-jar</type>
-                  <outputDirectory>${hadoopsmoke.copy}</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack-hadoopsmoke-jar</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>com.cloudera.itest</groupId>
-                  <artifactId>hadoopsmoke</artifactId>
-                  <type>test-jar</type>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <includes>**/*</includes>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
+
     </plugins>
   </build>
 </project>
