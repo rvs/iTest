@@ -2,6 +2,7 @@ package com.cloudera.itest
 
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
+import java.util.zip.ZipInputStream
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,10 +22,16 @@ import java.util.jar.JarFile
  * limitations under the License.
  */
 public abstract class JarContent {
+
+  static {
+    // Calling MOP hooks
+    bootstrapPlugins();
+  }
+
   private static List<String> patterns = null;
   private static List<String> content = null;
   // Exclude META* and inner classes
-  def static defaultExclPattern = [ '.*META.*', '.*\\$.*.class' ]
+  def static defaultExclPattern = ['.*META.*', '.*\\$.*.class']
 
   def static List<String> listContent(String jarFileName) throws IOException {
     content = new ArrayList<String>();
@@ -83,7 +90,87 @@ public abstract class JarContent {
           toRemove.add(l);
       }
     }
-      filtered.removeAll(toRemove);
-      return filtered;
+    filtered.removeAll(toRemove);
+    return filtered;
+  }
+
+  /**
+   * Finds JAR URL of an object's class belongs to
+   * @param ref is Class reference
+   * @return JAR URL or <code>null</code> if class doesn't belong
+   * to a JAR in the classpath
+   */
+  public static URL getJarURL(Class ref) {
+    URL clsUrl = ref.getResource(ref.getSimpleName() + ".class");
+    if (clsUrl != null) {
+      try {
+        URLConnection conn = clsUrl.openConnection();
+        if (conn instanceof JarURLConnection) {
+          JarURLConnection connection = (JarURLConnection) conn;
+          return connection.getJarFileURL();
+        }
+      }
+      catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds JAR URL of an object's class belongs to
+   * @param className is full name of the class e.g. java.lang.String
+   * @return JAR URL or <code>null</code> if class doesn't belong
+   * to a JAR in the classpath
+   * @throws ClassNotFoundException if class specified by className wasn't found
+   */
+  public static URL getJarURL(String className) throws ClassNotFoundException {
+    Class cl
+    cl = Class.forName(className)
+    return getJarURL(cl)
+  }
+
+  private static void bootstrapPlugins() {
+    /**
+     * Adding an ability to treat a content of an given InputStream as an
+     * ZipInputStream and unpack its content to specified destination with given
+     * pattern
+     * @param dest directory where the content will be unpacked
+     * @param includes regexps to include resources to be unpacked
+     */
+    InputStream.metaClass.unzip = { String dest, String includes ->
+      //in metaclass added methods, 'delegate' is the object on which
+      //the method is called. Here it's the file to unzip
+      if (includes == null) includes = "";
+      def result = new ZipInputStream(delegate)
+      def destFile = new File(dest)
+      if (!destFile.exists()) {
+        destFile.mkdir();
+      }
+      result.withStream {
+        def entry
+        while (entry = result.nextEntry) {
+          if (!entry.name.contains(includes)) {
+            continue
+          };
+          if (!entry.isDirectory()) {
+            new File(dest + File.separator + entry.name).parentFile?.mkdirs()
+            def output = new FileOutputStream(dest + File.separator
+                + entry.name)
+            output.withStream {
+              int len = 0;
+              byte[] buffer = new byte[4096]
+              while ((len = result.read(buffer)) > 0) {
+                output.write(buffer, 0, len);
+              }
+            }
+          }
+          else {
+            new File(dest + File.separator + entry.name).mkdir()
+          }
+        }
+      }
+    }
   }
 }
+
