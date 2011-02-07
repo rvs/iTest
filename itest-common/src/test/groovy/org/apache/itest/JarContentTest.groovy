@@ -1,8 +1,3 @@
-package org.apache.itest
-
-import org.junit.Test
-import static org.junit.Assert.assertTrue
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +15,11 @@ import static org.junit.Assert.assertTrue
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.itest
+
+import org.junit.Test
+import static org.junit.Assert.assertTrue
+
 class JarContentTest {
   @Test
   void testJarContent() {
@@ -51,5 +51,11 @@ class JarContentTest {
   void testUnpackJarContainerNeg() {
     def destination = 'target/local.unpack.dir';
     JarContent.unpackJarContainer('com.lang.NoString', destination, 'visitor');
+  }
+  // IOException is expected in case of a class not loaded from a jar
+  @Test(expected = IOException.class)
+  void testUnpackJarContainerNoJar() {
+    def destination = 'target/local.unpack.dir';
+    JarContent.unpackJarContainer(JarContentTest, destination, 'visitor');
   }
 }

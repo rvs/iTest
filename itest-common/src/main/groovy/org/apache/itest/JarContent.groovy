@@ -1,9 +1,3 @@
-package org.apache.itest
-
-import java.util.jar.JarEntry
-import java.util.jar.JarFile
-import java.util.zip.ZipInputStream
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,6 +15,12 @@ import java.util.zip.ZipInputStream
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.itest
+
+import java.util.jar.JarEntry
+import java.util.jar.JarFile
+import java.util.zip.ZipInputStream
+
 public abstract class JarContent {
 
   static {
@@ -135,24 +135,24 @@ public abstract class JarContent {
    * @param ref
    * @param destination
    * @param includes
-   * @return true if unpacked successfully, false otherwise
+   * @throws IOException if can't find class' jar file in the classpath
    */
-  public static boolean unpackJarContainer (Class ref,
-    String destination, String includes) {
+  public static void unpackJarContainer (Class ref,
+    String destination, String includes) throws IOException {
     URL connection = JarContent.getJarURL(ref);
     if (connection == null) {
-      return false;
+      throw new IOException("Class " + ref.getSimpleName() +
+          " doesn't belong to any jar file in the classpath");
     }
     ZipInputStream fis =
       new ZipInputStream(connection.openConnection().getInputStream());
     fis.unzip (destination, includes);
-    return true;
   }
 
-  public static boolean unpackJarContainer (String className,
-    String destination, String includes) {
+  public static unpackJarContainer (String className,
+    String destination, String includes) throws IOException {
     Class cl = Class.forName(className)
-    return unpackJarContainer (cl, destination, includes)
+    unpackJarContainer (cl, destination, includes)
   }
 
   private static void bootstrapPlugins() {
