@@ -128,66 +128,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.groovy.maven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <version>1.0</version>
-        <dependencies>
-          <dependency>
-            <groupId>hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>1.8.0.10</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>run-HSQLDB</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <source>
-                String cmd =
-                  "java -classpath " +
-                  com.cloudera.itest.JarContent.getJarURL(org.hsqldb.Server.class).toString() +
-                  " org.hsqldb.Server " +
-                  " -database.0 file:${basedir}/db/testdb.file -dbname.0 ${org.codehaus.maven-failsafe-plugin.dbname}";
-                cmd.execute();
-              </source>
-            </configuration>
-          </execution>
-          <execution>
-            <id>stop-HSQLDB</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <classpath>
-                <element>
-                  <groupId>hsqldb</groupId>
-                  <artifactId>hsqldb</artifactId>
-                  <version>1.8.0.10</version>
-                </element>
-              </classpath>
-              <source>
-                import java.sql.*;
-
-                Class.forName("org.hsqldb.jdbcDriver");
-                String url =
-                  "jdbc:hsqldb:hsql://${org.codehaus.maven-failsafe-plugin.dbhost}/" +
-                  "${org.codehaus.maven-failsafe-plugin.dbname}";
-                Connection con = DriverManager.getConnection(url, "sa", "");
-                Statement stmt = con.createStatement();
-                stmt.executeUpdate("SHUTDOWN");
-                stmt.close();
-              </source>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>1.0</version>
