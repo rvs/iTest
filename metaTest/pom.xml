@@ -15,6 +15,10 @@
     common functionality, dependencies,
     Most of the defaults can be overwritten in sub-modules if so desired.
   -->
+    <!--
+      Making sure that we have proper variables needed for Hadoop testing
+      These settings should be enforced at the top level
+    -->
     <HADOOP_HOME>${env.HADOOP_HOME}</HADOOP_HOME>
     <HADOOP_CONF_DIR>${env.HADOOP_CONF_DIR}</HADOOP_CONF_DIR>
     <!--
@@ -119,6 +123,33 @@
         <configuration>
           <skip>true</skip>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>enforce-property</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireProperty>
+                  <property>HADOOP_CONF_DIR</property>
+                  <message>HADOOP_CONF_DIR env. variable has to be set</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>HADOOP_HOME</property>
+                  <message>HADOOP_HOME env. variable has to be set</message>
+                </requireProperty>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>

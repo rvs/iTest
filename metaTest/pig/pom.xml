@@ -15,9 +15,6 @@
   <name>pigsmokes</name>
 
   <properties>
-    <!-- Making sure that we have proper variables to modify CLASSPATH -->
-    <HADOOP_HOME>${env.HADOOP_HOME}</HADOOP_HOME>
-    <HADOOP_CONF_DIR>${env.HADOOP_CONF_DIR}</HADOOP_CONF_DIR>
     <pig.jar.copy>${project.build.directory}/pig.jar</pig.jar.copy>
     <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
@@ -108,32 +105,6 @@
     </pluginManagement>
 
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>enforce-property</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireProperty>
-                  <property>HADOOP_CONF_DIR</property>
-                  <message>HADOOP_CONF_DIR env. variable has to be set</message>
-                </requireProperty>
-                <requireProperty>
-                  <property>HADOOP_HOME</property>
-                  <message>HADOOP_HOME env. variable has to be set</message>
-                </requireProperty>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
