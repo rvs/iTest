@@ -85,8 +85,8 @@
   <dependencies>
     <!-- Import of iTest artifact serving out-of-the-jar convenience methods -->
     <dependency>
-      <groupId>com.cloudera.itest</groupId>
-      <artifactId>JarRunner</artifactId>
+      <groupId>org.apache.itest</groupId>
+      <artifactId>itest-common</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
@@ -177,7 +177,7 @@
             </goals>
             <configuration>
               <source><![CDATA[
-                import com.cloudera.itest.*
+                import org.apache.itest.*
 
                 if (project.properties['org.codehaus.groovy.maven.destination'] &&
                     project.properties['org.codehaus.groovy.maven.jar']) {
