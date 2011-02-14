@@ -58,6 +58,10 @@
         Default value is set below
     -->
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
+    <!--
+        MAINTAINER property: not to be overridden by users
+    -->
+    <maven.repository>https://repository.cloudera.com/content/repositories/testsnaps/</maven.repository>
   </properties>
 
   <repositories>
@@ -72,6 +76,15 @@
       <url>https://repository.cloudera.com/content/repositories/releases/</url>
     </repository>
   </repositories>
+
+  <distributionManagement>
+    <!-- use the following if you ARE using a snapshot version. -->
+    <snapshotRepository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>${maven.repository}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <!--
     List of modules which should be executed as a part of stack testing run
