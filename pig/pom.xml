@@ -153,9 +153,14 @@
             <configuration>
               <source>
                 <!-- this hack-around is needed until DISTRO-75 isn't fixed -->
-                project.properties['lzo.jar'] = new File("${HADOOP_HOME}/lib").list(
-                  [accept:{d, f-> f ==~ /hadoop.*lzo.*.jar/ }] as FilenameFilter
-                ).toList().get(0);
+                try {
+                  project.properties['lzo.jar'] = new File("${HADOOP_HOME}/lib").list(
+                    [accept:{d, f-> f ==~ /hadoop.*lzo.*.jar/ }] as FilenameFilter
+                  ).toList().get(0);
+                } catch (java.lang.IndexOutOfBoundsException ioob) {
+                  log.error "No lzo.jar has been found under ${HADOOP_HOME}/lib. Check your installation.";
+                  throw ioob;
+                }
               </source>
             </configuration>
           </execution>
