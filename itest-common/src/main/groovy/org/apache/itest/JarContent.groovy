@@ -20,6 +20,7 @@ package org.apache.itest
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.zip.ZipInputStream
+import java.util.zip.ZipException
 
 public abstract class JarContent {
 
@@ -31,14 +32,26 @@ public abstract class JarContent {
   private static List<String> patterns = null;
   private static List<String> content = null;
   // Exclude META* and inner classes
-  def static defaultExclPattern = ['.*META.*', '.*\\$.*.class']
+  def public static defaultExclPattern = ['.*META.*', '.*\\$.*.class']
 
+  /**
+   * Lists content of a given jar file excluding defaultExclPattern and any extra
+   * patterns set via {@link JarContent#setPatterns} call
+   * @param jarFileName file for a jar
+   * @return list of Strings representing jar's entries
+   * @throws IOException if file isn't found and anything else goes wrong
+   */
   def static List<String> listContent(String jarFileName) throws IOException {
     content = new ArrayList<String>();
     if (jarFileName == null) {
       throw new IOException("Specify a jar file name");
     }
-    JarFile jarFile = new JarFile(jarFileName);
+    JarFile jarFile;
+    try {
+      jarFile = new JarFile(jarFileName)
+    } catch (ZipException ze) {
+      throw new IOException("Could not open " + jarFileName + " file.", ze);
+    };
 
     Enumeration<JarEntry> entries = jarFile.entries();
     while (entries.hasMoreElements()) {
@@ -147,6 +160,7 @@ public abstract class JarContent {
     ZipInputStream fis =
       new ZipInputStream(connection.openConnection().getInputStream());
     fis.unzip (destination, includes);
+
   }
 
   public static unpackJarContainer (String className,
@@ -157,7 +171,7 @@ public abstract class JarContent {
 
   private static void bootstrapPlugins() {
     /**
-     * Adding an ability to uppack a content of an given ZipInputStream
+     * Adding an ability to unpack a content of an given ZipInputStream
      * to specified destination with given pattern
      * @param dest directory where the content will be unpacked
      * @param includes regexps to include resources to be unpacked

@@ -28,6 +28,18 @@ class JarContentTest {
       println it;
     };
   }
+  @Test(expected = IOException.class)
+  void testJarContentNeg() {
+    def env = System.getenv();
+    try {
+      JarContent.listContent(env['JAVA_HOME'] + '/lib/nofilelikethat.jar').each {
+        println it;
+      }
+    } catch (IOException e) {
+      assert e.getMessage().startsWith('Could not open')
+      throw e;
+    };
+  }
 
   @Test
   void testUnpackJarContainer() {
