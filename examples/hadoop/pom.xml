@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>smoke-tests</artifactId>
+      <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>hadoopsmokes</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>hadoopsmokes</name>
+
+  <properties>
+    <hadoopsmoke.copy>${project.build.directory}/hadoopsmoke.jar</hadoopsmoke.copy>
+    <hadoopsmoke.ver>1.0-SNAPSHOT</hadoopsmoke.ver>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${hadoopsmoke.copy}/hadoopsmoke-${hadoopsmoke.ver}-tests.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>hadoopsmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>${hadoopsmoke.ver}</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.output>${hadoopsmoke.copy}</org.apache.maven-dependency-plugin.output>
+    <org.apache.maven-dependency-plugin.pattern>**/*</org.apache.maven-dependency-plugin.pattern>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>hadoopsmoke</artifactId>
+      <version>${hadoopsmoke.ver}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-core</artifactId>
+      <version>0.20.2-CDH3B4-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <forkMode>always</forkMode>
+          <systemPropertyVariables>
+             <hadoop.home>${HADOOP_HOME}</hadoop.home>
+             <hadoopsmoke.data>${project.build.directory}</hadoopsmoke.data>
+          </systemPropertyVariables>
+          <additionalClasspathElements>
+            <additionalClasspathElement>
+              ${HADOOP_CONF_DIR}
+            </additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
+      </plugin>
+
+      <!-- Enabling dependency plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

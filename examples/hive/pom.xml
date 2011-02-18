@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>smoke-tests</artifactId>
+      <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>hivesmokes</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>hivesmokes</name>
+
+  <properties>
+    <hive.data.url>http://www.grouplens.org/system/files/</hive.data.url>
+    <hive.data.tarball>ml-data.tar__0.gz</hive.data.tarball>
+    <hive.data.dir>ml-data</hive.data.dir>
+    <hive.script.name>test.hql</hive.script.name>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${env.HOME}/.m2/repository/com/cloudera/itest/hivesmoke/1.0-SNAPSHOT/hivesmoke-1.0-SNAPSHOT-tests.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>hivesmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>1.0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
+    <org.apache.maven-dependency-plugin.pattern>**/*.hql</org.apache.maven-dependency-plugin.pattern>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>hivesmoke</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <id>prepare</id>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <tasks>
+                <echo message="downloading and unzipping data..."/>
+                <get src="${hive.data.url}/${hive.data.tarball}"
+                     dest="${project.build.directory}/${hive.data.tarball}"/>
+                <untar src="${project.build.directory}/${hive.data.tarball}"
+                       dest="${project.build.directory}"
+                       compression="gzip"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <systemPropertyVariables>
+            <hive.script>
+              ${project.build.directory}/${hive.script.name}
+            </hive.script>
+          </systemPropertyVariables>
+          <forkMode>always</forkMode>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>

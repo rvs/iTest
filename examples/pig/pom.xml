@@ -1,0 +1,171 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>smoke-tests</artifactId>
+      <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>pigsmokes</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>pigsmokes</name>
+
+  <properties>
+    <pig.jar.copy>${project.build.directory}/pig.jar</pig.jar.copy>
+    <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${pig.jar.copy}/pigsmoke-${pig.smoke.version}.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>org.apache.pig</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>pigsmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>${pig.smoke.version}</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.output>${pig.jar.copy}</org.apache.maven-dependency-plugin.output>
+    <org.apache.maven-dependency-plugin.pattern>test/data/**/*</org.apache.maven-dependency-plugin.pattern>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>cdh-snapshots</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.pig</groupId>
+      <artifactId>pigsmoke</artifactId>
+      <version>${pig.smoke.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-core</artifactId>
+      <version>0.20.2-CDH3B4-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <!-- FIXME: https://issues.apache.org/jira/browse/PIG-1840 -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>copy</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>org.apache.pig</groupId>
+                    <artifactId>pigsmoke</artifactId>
+                    <type>jar</type>
+                    <outputDirectory>${pig.jar.copy}</outputDirectory>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+            <execution>
+              <id>unpack-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>unpack</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>org.apache.pig</groupId>
+                    <artifactId>pigsmoke</artifactId>
+                    <version>${pig.smoke.version}</version>
+                    <type>jar</type>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <includes>test/data/**/*</includes>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+          </executions>
+         </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <excludes>
+            <exclude>**/JarContentTest*</exclude>
+          </excludes>
+          <forkMode>always</forkMode>
+          <argLine>-Dpigunit.exectype.cluster=true</argLine>
+          <additionalClasspathElements>
+            <additionalClasspathElement>
+              ${HADOOP_CONF_DIR}
+            </additionalClasspathElement>
+            <additionalClasspathElement>
+              <!-- the value of ${lzo.jar} property is set by a groovy
+                   script during pre-integration-test phase below-->
+              ${HADOOP_HOME}/lib/${lzo.jar}
+            </additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>find-lzo-jar</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                <!-- this hack-around is needed until DISTRO-75 isn't fixed -->
+                try {
+                  project.properties['lzo.jar'] = new File("${HADOOP_HOME}/lib").list(
+                    [accept:{d, f-> f ==~ /hadoop.*lzo.*.jar/ }] as FilenameFilter
+                  ).toList().get(0);
+                } catch (java.lang.IndexOutOfBoundsException ioob) {
+                  log.error "No lzo.jar has been found under ${HADOOP_HOME}/lib. Check your installation.";
+                  throw ioob;
+                }
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

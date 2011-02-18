@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>packagesmokes</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>packagesmokes</name>
+
+  <!-- FIXME: we need to come up with a way of bootstrapping using a single top level pom.xml       -->
+  <!--        for now this is a self-contained POM that doesn't depend on a parent one              -->
+  <!--        NOTE: the only 2 sections that need to remain once we figure out how to do            -->
+  <!--              the boostrapping are <properties> and <plugin> enabling maven-dependency-plugin -->
+
+  <properties>
+    <HADOOP_HOME>${env.HADOOP_HOME}</HADOOP_HOME>
+    <HADOOP_CONF_DIR>${env.HADOOP_CONF_DIR}</HADOOP_CONF_DIR>
+    <org.apache.maven-failsafe-plugin.testInclude>**/Test*</org.apache.maven-failsafe-plugin.testInclude>
+    <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
+    <maven.repository>https://repository.cloudera.com/content/repositories/testsnaps/</maven.repository>
+
+    <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>packagesmoke</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>1.0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
+
+    <!-- FIXME: the 2 bellow could be made into Groovy code defaults if they are not set -->
+    <org.codehaus.groovy.maven.jar>
+      ${project.build.directory}/${org.apache.maven-dependency-plugin.artifactId}-${org.apache.maven-dependency-plugin.version}-tests.jar
+    </org.codehaus.groovy.maven.jar>
+    <org.codehaus.groovy.maven.destination>${project.build.directory}/test-classes</org.codehaus.groovy.maven.destination>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+    <repository>
+      <id>releases</id>
+      <name>Cloudera Releases</name>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <!-- use the following if you ARE using a snapshot version. -->
+    <snapshotRepository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>${maven.repository}</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>packagesmoke</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Import of iTest artifact serving out-of-the-jar convenience methods -->
+    <dependency>
+      <groupId>org.apache.itest</groupId>
+      <artifactId>itest-common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Gmaven plugin enables a lot of runtime flexibility for us -->
+    <dependency>
+      <groupId>org.codehaus.groovy.maven.runtime</groupId>
+      <artifactId>gmaven-runtime-1.6</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- The following plugins must be enabled inside modules in order to work -->
+    <pluginManagement>
+      <plugins>
+        <!-- Copy the test artifacts so it is easier to deal with it-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-testartifact-jar</id>
+              <phase>generate-test-resources</phase>
+              <goals>
+                <goal>copy</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>${org.apache.maven-dependency-plugin.groupId}</groupId>
+                    <artifactId>${org.apache.maven-dependency-plugin.artifactId}</artifactId>
+                    <version>${org.apache.maven-dependency-plugin.version}</version>
+                    <type>test-jar</type>
+                    <outputDirectory>${org.apache.maven-dependency-plugin.output}</outputDirectory>
+                  </artifactItem>
+                </artifactItems>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <!--Let's skip unit tests all together for there are none-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <!-- Copy the test artifacts so it is easier to deal with it-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>enforce-property</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireProperty>
+                  <property>HADOOP_CONF_DIR</property>
+                  <message>HADOOP_CONF_DIR env. variable has to be set</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>HADOOP_HOME</property>
+                  <message>HADOOP_HOME env. variable has to be set</message>
+                </requireProperty>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <includes>
+            <include>${org.apache.maven-failsafe-plugin.testInclude}</include>
+          </includes>
+          <workingDirectory>${project.build.directory}</workingDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This is were actual preparation is started -->
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>check-testslist</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source><![CDATA[
+                import org.apache.itest.*
+
+                if (project.properties['org.codehaus.groovy.maven.destination'] &&
+                    project.properties['org.codehaus.groovy.maven.jar']) {
+                     def prefix = project.properties['org.codehaus.groovy.maven.destination'];
+                     JarContent.listContent(project.properties['org.codehaus.groovy.maven.jar']).each {
+                     TestListUtils.touchTestFiles(prefix, it);
+                     };
+                }]]>
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
