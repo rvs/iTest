@@ -23,18 +23,16 @@ class ZypperCmdLinePackageManager extends PackageManager {
   public void setDefaults(String defaults) {}
 
   public void addBinRepo(String record, String url, String key, String cookie) {
-    def repoFile = new File("/etc/yum.repos.d/${record}")
-    
-    repoFile.write("""[${cookie.tr("\t\n\r ",'-')}]
-                      name="${cookie}"
-                      baseurl=${url}
-                      gpgkey=${key}
-                      gpgcheck=0
-                      autorefresh=1""")
+    shRoot.exec("zypper -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}")  
   }
 
   public void refresh() {
-    shRoot.exec("zypper refresh")
+    shRoot.exec("""expect -f - << __EOT__
+spawn zypper refresh
+expect "yes/no] (no):"
+send "yes\\r"
+expect eof
+__EOT__""")
   }
 
   public List<PackageInstance> search(String name, String version) {
@@ -46,21 +44,22 @@ class ZypperCmdLinePackageManager extends PackageManager {
   }
 
   public void install(PackageInstance pkg) {
-    shRoot.exec("zypper -l install ${pkg.name}")
+    shRoot.exec("zypper -q -n install -l -y ${pkg.name}")
   }
+
   public void remove(PackageInstance pkg) {
-    shRoot.exec("zypper remove ${pkg.name}")
+    shRoot.exec("zypper -q -n remove -y ${pkg.name}")
   }
 
   public boolean isInstalled(PackageInstance pkg) {
-    def text = shUser.exec("zypper info ${pkg.name}").out.join('\n')
+    def text = shUser.exec("zypper -q -n info ${pkg.name}").out.join('\n')
     return (text =~ /(?m)^Installed: Yes$/).find()
   }
 
   public void svc_do(PackageInstance pkg, String action) {
-//    shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name} | sed -ne '/^.etc.init.d./s#^.etc.init.d.##p'")
-//    shUser.out.each {
-//      shRoot.exec("service $it $action")
-//    }
+    shUser.exec("rpm -ql ${pkg.name} | sed -ne '/^.etc.rc.d./s#^.etc.rc.d.##p'")
+    shUser.out.each {
+      shRoot.exec("/sbin/service $it $action")
+    }
   }
 }
