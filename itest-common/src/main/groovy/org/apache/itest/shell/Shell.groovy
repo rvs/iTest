@@ -73,6 +73,20 @@ class Shell {
     ret = proc.exitValue()
     out = proc.in.readLines()
     err = proc.err.readLines()
+
+    if (LOG.isTraceEnabled()) {
+        LOG.trace("${shell} << __EOT__\n${script}\n__EOT__");
+        if (ret != 0) {
+           LOG.trace("return: $ret");
+        }
+        if (out.size() != 0) {
+           LOG.trace("stdout: $out");
+        }
+        if (err.size() != 0) {
+           LOG.trace("stderr: $err");
+        }
+    }
+
     return this
   }
 }
