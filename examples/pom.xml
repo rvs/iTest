@@ -164,6 +164,12 @@
             <include>${org.apache.maven-failsafe-plugin.testInclude}</include>
           </includes>
           <workingDirectory>${project.build.directory}</workingDirectory>
+          <systemPropertyVariables>
+             <HADOOP_HOME>${HADOOP_HOME}</HADOOP_HOME>
+          </systemPropertyVariables>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${HADOOP_CONF_DIR}</additionalClasspathElement>
+          </additionalClasspathElements>
         </configuration>
         <executions>
           <execution>
