@@ -48,6 +48,12 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.pig</groupId>
+      <artifactId>pig</artifactId>
+      <version>0.8.0-CDH3B4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.pig</groupId>
       <artifactId>pigsmoke</artifactId>
       <version>${pig.smoke.version}</version>
       <scope>test</scope>
@@ -55,7 +61,7 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
-      <version>0.20.2-CDH3B4-SNAPSHOT</version>
+      <version>0.20.2-CDH3B4</version>
     </dependency>
   </dependencies>
 
