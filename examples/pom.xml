@@ -169,6 +169,7 @@
           </systemPropertyVariables>
           <additionalClasspathElements>
             <additionalClasspathElement>${HADOOP_CONF_DIR}</additionalClasspathElement>
+            <org.apache.itest.JUnitUtils.results.dir>${project.build.directory}/failsafe-reports</org.apache.itest.JUnitUtils.results.dir>
           </additionalClasspathElements>
         </configuration>
         <executions>
