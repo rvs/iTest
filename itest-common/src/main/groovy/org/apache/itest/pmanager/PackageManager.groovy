@@ -111,6 +111,7 @@ public abstract class PackageManager {
    * @param action what to do with service(s) (start, stop, status, restart)
    * @deprecated it is now recommended to use getServices() instead
    */
+  @Deprecated
    public void svc_do(PackageInstance pkg, String action) {
      pkg.getServices().each {
        it."$action"()
