@@ -41,12 +41,14 @@ public class JUnitUtilsTest {
   
   @Test
   void testFailingTest() {
+    println('Disclaimer: This test expected to show a failure in an embeded testcase')
     assertFalse('DummyFail test is reported as passing',
                JUnitUtils.executeTests(DummyTestPass.class, DummyTestFail.class));
   }
 
   @Test
   void testErrorTest() {
+    println('Disclaimer: This test expected to show an error in an embeded testcase')
     assertFalse('DummyFail test is reported as passing',
                JUnitUtils.executeTests(DummyTestError.class));
   }
