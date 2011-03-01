@@ -94,6 +94,20 @@ public abstract class PackageManager {
   Shell shRoot = new Shell("/bin/bash -s", "root")
   Shell shUser = new Shell("/bin/bash -s")
 
+  /**
+   * Returns a concrete implementation of PackageManager specific for the distro
+   * where the code is executed (e.g. this OS)
+   * @return instance of a concrete implementation of PackageManager
+   */
+  static public PackageManager getPackageManager() {
+    return getPackageManager("");
+  }
+  /**
+   * Returns a concrete implementation of PackageManager specific for a given linux
+   * flavor.
+   * @param linux_flavor e.g. ubuntu, debian, redhat, centos, etc.
+   * @return instance of a concrete implementation of PackageManager
+   */
   static public PackageManager getPackageManager(String linux_flavor) {
     switch (linux_flavor ?: OS.linux_flavor) {
       case ~/(?is).*(ubuntu|debian).*/:
