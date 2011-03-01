@@ -19,6 +19,7 @@ package org.apache.itest.pmanager
 
 import org.apache.itest.shell.Shell
 import org.apache.itest.shell.OS
+import org.apache.itest.posix.Service
 
 public abstract class PackageManager {
   /**
@@ -73,17 +74,12 @@ public abstract class PackageManager {
   abstract public boolean isInstalled(PackageInstance pkg)
 
   /**
-   * Operate on services provided by a package (start, stop, status, restart)
-   * NOTE: this method assumes that a given package bundles a number of services (daemons)
-   * and allows you to operate on these services without requiring an explicit knowledge
-   * of their names. If a single package provides multiple services all of them will
-   * be operated on simultaneously (you don't get to choose any subsets). If a package
-   * doesn't provide any services calling this method is a noop.
+   * Get a list of services (System V init scripts) provided by a given package
    *
    * @param pkg a package that is expected to provide 0, 1 or multiple services
-   * @param action what to do with service(s) (start, stop, status, restart)
+   * @return list of Service instances
    */
-  abstract public void svc_do(PackageInstance pkg, String action)
+  abstract public List<Service> getServices(PackageInstance pkg)
 
   /**
    * type of a package manager. expected to be overwritten by concrete subclasses implementing
@@ -102,6 +98,25 @@ public abstract class PackageManager {
   static public PackageManager getPackageManager() {
     return getPackageManager("");
   }
+
+  /**
+   * Operate on services provided by a package (start, stop, status, restart)
+   * NOTE: this method assumes that a given package bundles a number of services (daemons)
+   * and allows you to operate on these services without requiring an explicit knowledge
+   * of their names. If a single package provides multiple services all of them will
+   * be operated on simultaneously (you don't get to choose any subsets). If a package
+   * doesn't provide any services calling this method is a noop.
+   *
+   * @param pkg a package that is expected to provide 0, 1 or multiple services
+   * @param action what to do with service(s) (start, stop, status, restart)
+   * @deprecated it is now recommended to use getServices() instead
+   */
+   public void svc_do(PackageInstance pkg, String action) {
+     pkg.getServices().each {
+       it."$action"()
+     }
+   }
+
   /**
    * Returns a concrete implementation of PackageManager specific for a given linux
    * flavor.

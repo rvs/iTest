@@ -17,6 +17,8 @@
  */
 package org.apache.itest.pmanager
 
+import org.apache.itest.posix.Service
+
 class ZypperCmdLinePackageManager extends PackageManager {
   static String type  = "zypper"
 
@@ -56,10 +58,8 @@ __EOT__""")
     return (text =~ /(?m)^Installed: Yes$/).find()
   }
 
-  public void svc_do(PackageInstance pkg, String action) {
+  public List<Service> getServices(PackageInstance pkg) {
     shUser.exec("rpm -ql ${pkg.name} | sed -ne '/^.etc.rc.d./s#^.etc.rc.d.##p'")
-    shUser.out.each {
-      shRoot.exec("/sbin/service $it $action")
-    }
+    return shUser.out.collect({new Service("$it")})
   }
 }

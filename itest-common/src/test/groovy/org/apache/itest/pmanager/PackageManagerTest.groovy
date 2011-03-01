@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
 import static org.apache.itest.pmanager.PackageManager.getPackageManager
+import org.apache.itest.posix.Service
 
 class PackageManagerTest {
   PackageManager pmgr = getPackageManager("")
@@ -39,5 +40,13 @@ class PackageManagerTest {
     PackageInstance bash_pkg = PackageInstance.getPackageInstance(pmgr, "bash")
 
     assertTrue("bash is not installed on your system", pmgr.isInstalled(bash_pkg))
+  }
+
+  @Test
+  void testGetServicesCron() {
+    PackageInstance cron = PackageInstance.getPackageInstance(pmgr, "cron")
+    List<Service> svcs = pmgr.getServices(cron)
+
+    assertTrue("cron package is expected to provide at least one service", svcs.size() != 0)
   }
 }

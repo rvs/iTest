@@ -18,6 +18,7 @@
 package org.apache.itest.pmanager
 
 import org.apache.itest.shell.Shell
+import org.apache.itest.posix.Service
 
 class AptCmdLinePackageManager extends PackageManager {
   // FIXME: NB export DEBIAN_FRONTEND=noninteractive
@@ -63,10 +64,8 @@ class AptCmdLinePackageManager extends PackageManager {
     return (text =~ /\nRemv ${pkg.name} /).find()
   }
 
-  public void svc_do(PackageInstance pkg, String action) {
+  public List<Service> getServices(PackageInstance pkg) {
     shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name} | sed -ne '/^.etc.init.d./s#^.etc.init.d.##p'")
-    shUser.out.each {
-      shRoot.exec("service $it $action")
-    }
+    return shUser.out.collect({new Service("$it")})
   }
 }

@@ -17,6 +17,8 @@
  */
 package org.apache.itest.pmanager
 
+import org.apache.itest.posix.Service
+
 abstract class PackageInstance {
   PackageManager mgr
   String name
@@ -25,6 +27,7 @@ abstract class PackageInstance {
   abstract public boolean isInstalled()
   abstract public void install()
   abstract public void remove()
+  abstract public List<Service> getServices()
 
   /**
    * Factory method for creating an instance of a Package that can reside in

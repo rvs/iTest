@@ -15,24 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.itest.pmanager
+package org.apache.itest.posix
 
-import org.apache.itest.posix.Service
+import org.apache.itest.shell.Shell
+import org.junit.Test
+import static org.junit.Assert.assertTrue
 
-class ManagedPackage extends PackageInstance {
-  public boolean isInstalled() {
-    return mgr.isInstalled()
-  }
+class ServiceTest {
+  Service ssh = new Service("ssh");
 
-  public void install() {
-    mgr.install(this)
-  }
-
-  public void remove() {
-    mgr.remove(this)
-  }
-
-  public List<Service> getServices() {
-    return mgr.getServices();
+  @Test
+  void testStatus() {
+    assertTrue("Expected a non-empty string as an ssh service status", ssh.status() != "")
   }
 }
