@@ -14,6 +14,16 @@
   <version>1.0-SNAPSHOT</version>
   <name>packagesmokes</name>
 
+  <!-- FIXME: we really have to have a way to bootstrap from a Maven repo  -->
+  <!--        -Dproject.pom=com.cloudera.itest:packagesmokes:1.0-SNAPSHOT  -->
+  <repositories>
+    <repository>
+      <id>testsnaps</id>
+      <name>Test Snapshots</name>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+    </repository>
+  </repositories>
+
   <properties>
     <cdh.repo.host>archive.cloudera.com</cdh.repo.host>
     <cdh.repo.version>3</cdh.repo.version>
