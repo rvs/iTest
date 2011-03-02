@@ -28,10 +28,10 @@ class YumCmdLinePackageManager extends PackageManager {
     def repoFile = new File("/etc/yum.repos.d/${record}");
     try {
       repoFile.write("""[${cookie.replaceAll(/\s+/, '-')}]
-  name="${cookie}"
-  baseurl=${url}
-  gpgkey=${key}
-  gpgcheck=0""");
+name="${cookie}"
+baseurl=${url}
+gpgkey=${key}
+gpgcheck=0""");
     } catch (IOException) {
       // If write wasn't successful return error code
       return 1;
