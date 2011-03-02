@@ -190,6 +190,8 @@
           <workingDirectory>${project.build.directory}</workingDirectory>
           <systemPropertyVariables>
              <HADOOP_HOME>${HADOOP_HOME}</HADOOP_HOME>
+             <log4j.configuration>${project.baseUri}/../conf/log4j.configuration</log4j.configuration>
+             <org.apache.itest.log4j.level>INFO</org.apache.itest.log4j.level>
           </systemPropertyVariables>
           <additionalClasspathElements>
             <additionalClasspathElement>${HADOOP_CONF_DIR}</additionalClasspathElement>
