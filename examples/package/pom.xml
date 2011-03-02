@@ -22,7 +22,7 @@
     <org.apache.maven-dependency-plugin.artifactId>packagesmoke</org.apache.maven-dependency-plugin.artifactId>
     <org.apache.maven-dependency-plugin.version>1.0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
 
-    <org.apache.maven-failsafe-plugin.testInclude>**/PackageSuites*</org.apache.maven-failsafe-plugin.testInclude>
+    <org.apache.maven-failsafe-plugin.testInclude>**/PackagesSuite*</org.apache.maven-failsafe-plugin.testInclude>
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
 
     <!-- FIXME: the 2 bellow could be made into Groovy code defaults if they are not set -->
