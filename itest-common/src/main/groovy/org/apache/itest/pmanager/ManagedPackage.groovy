@@ -21,7 +21,7 @@ import org.apache.itest.posix.Service
 
 class ManagedPackage extends PackageInstance {
   public boolean isInstalled() {
-    return mgr.isInstalled()
+    return mgr.isInstalled(this)
   }
 
   public void install() {
@@ -33,6 +33,6 @@ class ManagedPackage extends PackageInstance {
   }
 
   public List<Service> getServices() {
-    return mgr.getServices();
+    return mgr.getServices(this);
   }
 }
