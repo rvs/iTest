@@ -37,12 +37,14 @@ public abstract class PackageManager {
    * @param url a URL containing the packages constituting the repository (null is default)
    * @param key an optional (can be null) cryptographic key for authenticating the content of the repository
    * @param cookie an optional, package manager specific opaque string
+   * @return int return code of the operation: o in case of success, non-zero otherwise
    */
-  abstract public void addBinRepo(String record, String url, String key, String cookie)
+  abstract public int addBinRepo(String record, String url, String key, String cookie)
   /**
    * Refresh the cached data describing the content of all registered repositories
+   * @return int return code of the operation: o in case of success, non-zero otherwise
    */
-  abstract public void refresh()
+  abstract public int refresh()
 
 
   /**
@@ -57,14 +59,16 @@ public abstract class PackageManager {
    * Install a given package (from collection of all the packages available in all the repositories)
    *
    * @param pkg a package to be installed
+   * @return int return code of the operation: o in case of success, non-zero otherwise
    */
-  abstract public void install(PackageInstance pkg)
+  abstract public int install(PackageInstance pkg)
   /**
    * Remove a given package that is already installed on the system
    *
    * @param pkg a package to be installed
+   * @return int return code of the operation: o in case of success, non-zero otherwise
    */
-  abstract public void remove(PackageInstance pkg)
+  abstract public int remove(PackageInstance pkg)
   /**
    * Check if a given package is installed on the system
    *

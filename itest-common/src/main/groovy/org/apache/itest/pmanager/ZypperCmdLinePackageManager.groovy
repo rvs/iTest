@@ -24,17 +24,19 @@ class ZypperCmdLinePackageManager extends PackageManager {
 
   public void setDefaults(String defaults) {}
 
-  public void addBinRepo(String record, String url, String key, String cookie) {
-    shRoot.exec("zypper -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}")  
+  public int addBinRepo(String record, String url, String key, String cookie) {
+    shRoot.exec("zypper -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}");
+    return shRoot.getRet();
   }
 
-  public void refresh() {
+  public int refresh() {
     shRoot.exec("""expect -f - << __EOT__
 spawn zypper refresh
 expect "yes/no] (no):"
 send "yes\\r"
 expect eof
-__EOT__""")
+__EOT__""");
+    return shRoot.getRet();
   }
 
   public List<PackageInstance> search(String name, String version) {
@@ -45,12 +47,14 @@ __EOT__""")
     return packages
   }
 
-  public void install(PackageInstance pkg) {
-    shRoot.exec("zypper -q -n install -l -y ${pkg.name}")
+  public int install(PackageInstance pkg) {
+    shRoot.exec("zypper -q -n install -l -y ${pkg.name}");
+    return shRoot.getRet();
   }
 
-  public void remove(PackageInstance pkg) {
-    shRoot.exec("zypper -q -n remove -y ${pkg.name}")
+  public int remove(PackageInstance pkg) {
+    shRoot.exec("zypper -q -n remove -y ${pkg.name}");
+    return shRoot.getRet();
   }
 
   public boolean isInstalled(PackageInstance pkg) {

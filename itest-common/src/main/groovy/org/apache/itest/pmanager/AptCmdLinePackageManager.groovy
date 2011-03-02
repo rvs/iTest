@@ -17,31 +17,35 @@
  */
 package org.apache.itest.pmanager
 
-import org.apache.itest.shell.Shell
 import org.apache.itest.posix.Service
 
 class AptCmdLinePackageManager extends PackageManager {
   // FIXME: NB export DEBIAN_FRONTEND=noninteractive
-  static String type  = "apt"
+  static String type  = "apt";
 
   public void setDefaults(String defaults) {
-     shRoot.exec("debconf-set-selections <<__EOT__\n${defaults}\n__EOT__")
+     shRoot.exec("debconf-set-selections <<__EOT__\n${defaults}\n__EOT__");
   }
 
-  public void addBinRepo(String record, String url, String key, String cookie) {
+  public int addBinRepo(String record, String url, String key, String cookie) {
+    int ret;
     if (!url)
-      url = "http://us.archive.ubuntu.com/ubuntu/"
+      url = "http://us.archive.ubuntu.com/ubuntu/";
 
-    shRoot.exec("add-apt-repository 'deb ${url} ${cookie}'")
+    shRoot.exec("add-apt-repository 'deb ${url} ${cookie}'");
+    ret = shRoot.getRet();
 
     if (key) {
-      def text = key.toURL().text
-      shRoot.exec("apt-key add - <<__EOT__\n${text}\n__EOT__")
+      def text = key.toURL().text;
+      shRoot.exec("apt-key add - <<__EOT__\n${text}\n__EOT__");
+      ret |= shRoot.getRet();
     }
+    return ret;
   }
 
-  public void refresh() {
-    shRoot.exec("apt-get update")
+  public int refresh() {
+    shRoot.exec("apt-get update");
+    return shRoot.getRet();
   }
 
   public List<PackageInstance> search(String name, String version) {
@@ -52,11 +56,13 @@ class AptCmdLinePackageManager extends PackageManager {
     return packages
   }
 
-  public void install(PackageInstance pkg) {
-    shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y install ${pkg.name}")
+  public int install(PackageInstance pkg) {
+    shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y install ${pkg.name}");
+    return shRoot.getRet();
   }
-  public void remove(PackageInstance pkg) {
-    shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y remove ${pkg.name}")
+  public int remove(PackageInstance pkg) {
+    shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y remove ${pkg.name}");
+    return shRoot.getRet();
   }
 
   public boolean isInstalled(PackageInstance pkg) {

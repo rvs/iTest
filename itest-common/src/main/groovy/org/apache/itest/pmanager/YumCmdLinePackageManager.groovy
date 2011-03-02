@@ -24,17 +24,24 @@ class YumCmdLinePackageManager extends PackageManager {
 
   public void setDefaults(String defaults) {}
 
-  public void addBinRepo(String record, String url, String key, String cookie) {
-    def repoFile = new File("/etc/yum.repos.d/${record}")
-    repoFile.write("""[${cookie.replaceAll(/\s+/, '-')}]
-name="${cookie}"
-baseurl=${url}
-gpgkey=${key}
-gpgcheck=0""")
+  public int addBinRepo(String record, String url, String key, String cookie) {
+    def repoFile = new File("/etc/yum.repos.d/${record}");
+    try {
+      repoFile.write("""[${cookie.replaceAll(/\s+/, '-')}]
+  name="${cookie}"
+  baseurl=${url}
+  gpgkey=${key}
+  gpgcheck=0""");
+    } catch (IOException) {
+      // If write wasn't successful return error code
+      return 1;
+    }
+    return 0;
   }
 
-  public void refresh() {
+  public int refresh() {
     // FIXME: really?
+    return 0;
   }
 
   public List<PackageInstance> search(String name, String version) {
@@ -47,11 +54,13 @@ gpgcheck=0""")
     return packages
   }
 
-  public void install(PackageInstance pkg) {
-    shRoot.exec("yum -y install ${pkg.name}")
+  public int install(PackageInstance pkg) {
+    shRoot.exec("yum -y install ${pkg.name}");
+    return shRoot.getRet();
   }
-  public void remove(PackageInstance pkg) {
-    shRoot.exec("yum -y erase ${pkg.name}")
+  public int remove(PackageInstance pkg) {
+    shRoot.exec("yum -y erase ${pkg.name}");
+    return shRoot.getRet();
   }
 
   public boolean isInstalled(PackageInstance pkg) {
