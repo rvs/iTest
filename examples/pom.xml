@@ -95,6 +95,7 @@
     List of modules which should be executed as a part of stack testing run
   -->
   <modules>
+    <module>conf</module>
     <module>pig</module>
     <module>hive</module>
     <module>hadoop</module>
@@ -102,6 +103,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- Import configuration resources for the stack validation -->
+      <dependency>
+        <groupId>com.cloudera.itest</groupId>
+        <artifactId>smoke-tests-conf</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <scope>test</scope>
+      </dependency>
       <!-- Import of iTest artifact serving out-of-the-jar convenience methods -->
       <dependency>
         <groupId>org.apache.itest</groupId>
@@ -127,6 +135,12 @@
   </dependencyManagement>
 
   <dependencies>
+    <!-- We have to be configured in order to function properly -->
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>smoke-tests-conf</artifactId>
+      <scope>test</scope>
+    </dependency>
     <!-- Turn them on for all children -->
     <dependency>
       <groupId>org.apache.itest</groupId>
@@ -190,7 +204,7 @@
           <workingDirectory>${project.build.directory}</workingDirectory>
           <systemPropertyVariables>
              <HADOOP_HOME>${HADOOP_HOME}</HADOOP_HOME>
-             <log4j.configuration>${project.baseUri}/../conf/log4j.configuration</log4j.configuration>
+             <log4j.configuration>org.apache.itest.log4j.configuration</log4j.configuration>
              <org.apache.itest.log4j.level>INFO</org.apache.itest.log4j.level>
           </systemPropertyVariables>
           <additionalClasspathElements>
