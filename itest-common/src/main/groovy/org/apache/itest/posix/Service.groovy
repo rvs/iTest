@@ -69,4 +69,11 @@ class Service {
     sh.exec("service $svc_name status");
     return shRoot.out;
   }
+  /**
+   * Returns name of the service
+   * @return service name
+   */
+  public String getName() {
+    return svc_name;
+  }
 }

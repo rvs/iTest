@@ -20,12 +20,15 @@ package org.apache.itest.posix
 import org.apache.itest.shell.Shell
 import org.junit.Test
 import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertEquals
 
 class ServiceTest {
-  Service ssh = new Service("ssh");
+  private final String name = "ssh";
+  Service ssh = new Service(name);
 
   @Test
   void testStatus() {
     assertTrue("Expected a non-empty string as an ssh service status", ssh.status() != "")
+    assertEquals("wrong service name", name, ssh.getName());
   }
 }
