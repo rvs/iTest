@@ -80,10 +80,10 @@ class Shell {
            LOG.trace("return: $ret");
         }
         if (out.size() != 0) {
-           LOG.trace("stdout: $out");
+           LOG.trace("\n<stdout>\n   ${out.join('\n   ')}\n</stdout>");
         }
         if (err.size() != 0) {
-           LOG.trace("stderr: $err");
+           LOG.trace("\n<stderr>\n   ${err.join('\n   ')}\n</stderr>");
         }
     }
 
