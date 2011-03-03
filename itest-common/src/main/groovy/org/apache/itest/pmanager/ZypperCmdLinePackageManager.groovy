@@ -20,22 +20,20 @@ package org.apache.itest.pmanager
 import org.apache.itest.posix.Service
 
 class ZypperCmdLinePackageManager extends PackageManager {
-  static String type  = "zypper"
+  static String type  = "zypper";
+  
+  private String key_opts = "--no-gpg-checks";
 
   public void setDefaults(String defaults) {}
 
   public int addBinRepo(String record, String url, String key, String cookie) {
-    shRoot.exec("zypper -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}");
+    // FIXME: override key_opts when we start getting a real key
+    shRoot.exec("zypper ${key_opts} -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}");
     return shRoot.getRet();
   }
 
   public int refresh() {
-    shRoot.exec("""expect -f - << __EOT__
-spawn zypper refresh
-expect "yes/no] (no):"
-send "yes\\r"
-expect eof
-__EOT__""");
+    shRoot.exec("zypper ${key_opts} refresh");
     return shRoot.getRet();
   }
 
