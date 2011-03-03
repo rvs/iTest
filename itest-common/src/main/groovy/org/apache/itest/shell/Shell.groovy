@@ -60,7 +60,7 @@ class Shell {
    * @return Shell object for chaining
    */
   Shell exec(Object... args) {
-    def proc = user ? "sudo -u $user $shell".execute() :
+    def proc = user ? "sudo -u $user PATH=${System.getenv('PATH')} $shell".execute() :
                                     "$shell".execute()
     script = args.join("\n")
     Thread.start {
