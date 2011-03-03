@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="iTest" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+  <bannerLeft>
+    <name>iTest</name>
+    <src>http://cloudera.github.com/iTest/images/itest.png</src>
+    <href>http://cloudera.github.com/iTest/</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>http://cloudera.github.com/iTest/images/banner.png</src>
+  </bannerRight>
+
+  <body>
+    <links>
+      <item name="Apache" href="http://www.apache.org/" />
+      <item name="iTest 1.0" href="http://github.com/cloudera/iTest"/>
+    </links>
+
+    <menu name="iTest">
+      <item name="Welcome" href="index.html"/>
+
+    </menu>
+    <menu name="About iTest">
+      <item name="iTest" href="itest.html"/>
+      <item name="Development guide" href="devguide.html"/>
+      <item name="FAQ" href="faq.html"/>
+    </menu>
+    <menu name="Using iTest">
+      <item name="User guide" href="userguide.html"/>
+      <item name="Examples" href="examples.html"/>
+    </menu>
+
+    <menu name="Getting iTest">
+      <item name="Binary" href="downloads.html#binary"/>
+      <item name="Sources" href="downloads.html#sources"/>
+    </menu>
+  </body>
+</project>

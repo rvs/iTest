@@ -1,0 +1,20 @@
+Develop with iTest
+~~~~~~~~~~~~~~~~~~
+
+* A typical use case for iTest includes the following pieces
+
+** a test artifact:
+
+     a self-contained archive (such as jar file available via Maven) includes
+     test code (compiled Java classes, helper scripts, test data, golden files)
+
+     Typically, Maven artifact has a manifest which declares the artifact
+     group, name, and version. Using this triplet an artifact can be identified
+     for use in upstream projects
+
+** starter project (test suite)
+
+     this is (typically) a maven pom file which declares required dependencies
+     on test artifact(s) and defines additional optional steps to prepare
+     environment where the test scenarios will be executed.
+
