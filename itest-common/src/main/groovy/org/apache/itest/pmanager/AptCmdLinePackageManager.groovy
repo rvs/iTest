@@ -18,29 +18,34 @@
 package org.apache.itest.pmanager
 
 import org.apache.itest.posix.Service
+import org.apache.itest.shell.Shell
 
 class AptCmdLinePackageManager extends PackageManager {
   // FIXME: NB export DEBIAN_FRONTEND=noninteractive
   static String type  = "apt";
+  static String repository_registry = "/etc/apt/sources.list.d/%s.list";
+
+  private static final ROOT_URL = "http://us.archive.ubuntu.com/ubuntu/";
 
   public void setDefaults(String defaults) {
      shRoot.exec("debconf-set-selections <<__EOT__\n${defaults}\n__EOT__");
   }
 
   public int addBinRepo(String record, String url, String key, String cookie) {
-    int ret;
+    Shell superWriter = new Shell("/bin/dd of=${String.format(repository_registry, record)}", "root");
     if (!url)
-      url = "http://us.archive.ubuntu.com/ubuntu/";
-
-    shRoot.exec("add-apt-repository 'deb ${url} ${cookie}'");
-    ret = shRoot.getRet();
+      url = ROOT_URL;
 
     if (key) {
-      def text = key.toURL().text;
-      shRoot.exec("apt-key add - <<__EOT__\n${text}\n__EOT__");
-      ret |= shRoot.getRet();
+        def text = key.toURL().text;
+        shRoot.exec("apt-key add - <<__EOT__\n${text}\n__EOT__");
+        if (shRoot.getRet()) {
+          return shRoot.getRet();
+        }
     }
-    return ret;
+
+    superWriter.exec("deb ${url} ${cookie}\ndeb-src ${url} ${cookie}");
+    return superWriter.getRet();
   }
 
   public int refresh() {

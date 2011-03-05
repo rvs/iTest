@@ -48,6 +48,16 @@ public abstract class PackageManager {
 
 
   /**
+   * De-register a binary package repository.
+   *
+   * @param record a package manager specific KEY portion of the repository registration (null is default)
+   * @return int return code of the operation: o in case of success, non-zero otherwise
+   */
+  public int removeBinRepo(String record) {
+    shRoot.exec("rm -f ${String.format(getRepository_registry(), record)}");
+    return shRoot.getRet();
+  }
+  /**
    * Search for a package in all registered repositories
    *
    * @param name name of the package (inexact matches are ok)
@@ -90,6 +100,12 @@ public abstract class PackageManager {
    * particular package managers (yum, apt, zypper, etc.)
    */
   static String type  = "abstract"
+
+  /**
+   * A registry location for repositories to be added to. Currently all the package managers
+   * we have to support can be handled by treating this as a subdirectory in a local filesystem.
+   */
+  static String repository_registry = "/tmp/%s.repo"
 
   Shell shRoot = new Shell("/bin/bash -s", "root")
   Shell shUser = new Shell("/bin/bash -s")

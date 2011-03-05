@@ -21,6 +21,7 @@ import org.apache.itest.posix.Service
 
 class ZypperCmdLinePackageManager extends PackageManager {
   static String type  = "zypper";
+  static String repository_registry = "/etc/zypp/repos.d/%s.repo";
   
   private String key_opts = "--no-gpg-checks";
 
@@ -29,6 +30,11 @@ class ZypperCmdLinePackageManager extends PackageManager {
   public int addBinRepo(String record, String url, String key, String cookie) {
     // FIXME: override key_opts when we start getting a real key
     shRoot.exec("zypper ${key_opts} -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}");
+    return shRoot.getRet();
+  }
+
+  public int removeBinRepo(String record) {
+    shRoot.exec("zypper ${key_opts} -q -n rr '${record}'");
     return shRoot.getRet();
   }
 

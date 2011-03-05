@@ -18,25 +18,24 @@
 package org.apache.itest.pmanager
 
 import org.apache.itest.posix.Service
+import org.apache.itest.shell.Shell
 
 class YumCmdLinePackageManager extends PackageManager {
-  static String type  = "yum"
+  static String type  = "yum";
+  static String repository_registry = "/etc/yum.repos.d/%.repo";
 
   public void setDefaults(String defaults) {}
 
   public int addBinRepo(String record, String url, String key, String cookie) {
-    def repoFile = new File("/etc/yum.repos.d/${record}");
-    try {
-      repoFile.write("""[${cookie.replaceAll(/\s+/, '-')}]
+    Shell superWriter = new Shell("/bin/dd of=${String.format(repository_registry, record)}", "root");
+
+    superWriter.exec("""[${cookie.replaceAll(/\s+/, '-')}]
 name="${cookie}"
 baseurl=${url}
 gpgkey=${key}
-gpgcheck=0""");
-    } catch (IOException) {
-      // If write wasn't successful return error code
-      return 1;
-    }
-    return 0;
+gpgcheck=${(key!=null)?1:0}""");
+
+    return superWriter.ret;
   }
 
   public int refresh() {
