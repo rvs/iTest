@@ -41,6 +41,20 @@ public abstract class PackageManager {
    */
   abstract public int addBinRepo(String record, String url, String key, String cookie)
   /**
+   * Register a binary package repository so that packages can be accessed from it.
+   * NOTE: repository management is assumed to follow a KVP API with unique implementation
+   * specific keys (records) referencing tuples of information describing a repository
+   *
+   * @param record a package manager specific KEY portion of the repository registration (null is default)
+   * @param a full description of the repository in a native format
+   * @return int return code of the operation: o in case of success, non-zero otherwise
+   */
+  public int addBinRepo(String record, String descr) {
+    Shell superWriter = new Shell("/bin/dd of=${String.format(getRepository_registry(), record)}", "root");
+    superWriter.exec("${descr}");
+    return superWriter.getRet();
+  }
+  /**
    * Refresh the cached data describing the content of all registered repositories
    * @return int return code of the operation: o in case of success, non-zero otherwise
    */

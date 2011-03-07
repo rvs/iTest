@@ -22,20 +22,18 @@ import org.apache.itest.shell.Shell
 
 class YumCmdLinePackageManager extends PackageManager {
   static String type  = "yum";
-  static String repository_registry = "/etc/yum.repos.d/%.repo";
+  static String repository_registry = "/etc/yum.repos.d/%s.repo";
 
   public void setDefaults(String defaults) {}
 
   public int addBinRepo(String record, String url, String key, String cookie) {
-    Shell superWriter = new Shell("/bin/dd of=${String.format(repository_registry, record)}", "root");
-
-    superWriter.exec("""[${cookie.replaceAll(/\s+/, '-')}]
+    String descr = """[${cookie.replaceAll(/\s+/, '-')}]
 name="${cookie}"
 baseurl=${url}
 gpgkey=${key}
-gpgcheck=${(key!=null)?1:0}""");
+gpgcheck=${(key!=null)?1:0}""";
 
-    return superWriter.ret;
+    return addBinRepo(record, descr);
   }
 
   public int refresh() {

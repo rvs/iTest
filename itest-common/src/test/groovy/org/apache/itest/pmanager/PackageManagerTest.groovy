@@ -57,6 +57,14 @@ class PackageManagerTest {
                  0, pmgr.addBinRepo(repo_id, "http://127.0.0.1", null, "random strings here"));
     assertEquals("Can not remove repo",
                  0, pmgr.removeBinRepo(repo_id));
-    def a = 1;
+  }
+
+  @Test
+  void testRepoFileManagement() {
+    String repo_id = "test-repo";
+    assertEquals("Can not add repo",
+                 0, pmgr.addBinRepo(repo_id, "random strings here"));
+    assertEquals("Can not remove repo",
+                 0, pmgr.removeBinRepo(repo_id));
   }
 }

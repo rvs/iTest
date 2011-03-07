@@ -32,7 +32,6 @@ class AptCmdLinePackageManager extends PackageManager {
   }
 
   public int addBinRepo(String record, String url, String key, String cookie) {
-    Shell superWriter = new Shell("/bin/dd of=${String.format(repository_registry, record)}", "root");
     if (!url)
       url = ROOT_URL;
 
@@ -44,8 +43,7 @@ class AptCmdLinePackageManager extends PackageManager {
         }
     }
 
-    superWriter.exec("deb ${url} ${cookie}\ndeb-src ${url} ${cookie}");
-    return superWriter.getRet();
+    return addBinRepo(record, "deb ${url} ${cookie}\ndeb-src ${url} ${cookie}");
   }
 
   public int refresh() {
