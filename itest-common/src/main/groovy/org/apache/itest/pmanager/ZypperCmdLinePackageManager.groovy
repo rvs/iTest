@@ -43,6 +43,11 @@ class ZypperCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
 
+  public int cleanup() {
+    shRoot.exec("zypper clean -a");
+    return shRoot.getRet();
+  }
+
   public List<PackageInstance> search(String name, String version) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("zypper search $name").out.each {

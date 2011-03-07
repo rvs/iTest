@@ -55,6 +55,12 @@ public abstract class PackageManager {
     return superWriter.getRet();
   }
   /**
+   * Clean up the repository cache
+   * @return int return code of the operation: o in case of success, non-zero otherwise
+   */
+  abstract public int cleanup()
+
+  /**
    * Refresh the cached data describing the content of all registered repositories
    * @return int return code of the operation: o in case of success, non-zero otherwise
    */

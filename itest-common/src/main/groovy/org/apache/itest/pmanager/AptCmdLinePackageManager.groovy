@@ -51,6 +51,11 @@ class AptCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
 
+  public int cleanup() {
+    shRoot.exec("apt-get -y clean", "apt-get -y autoremove");
+    return shRoot.getRet();
+  }
+
   public List<PackageInstance> search(String name, String version) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("apt-cache search --names-only $name").out.each {

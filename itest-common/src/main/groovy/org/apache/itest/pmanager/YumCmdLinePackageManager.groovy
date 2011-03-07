@@ -41,6 +41,11 @@ gpgcheck=${(key!=null)?1:0}""";
     return 0;
   }
 
+   public int cleanup() {
+    shRoot.exec("yum clean all");
+    return shRoot.getRet();
+  }
+
   public List<PackageInstance> search(String name, String version) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("yum --color=never -d 0 search $name").out.each {
