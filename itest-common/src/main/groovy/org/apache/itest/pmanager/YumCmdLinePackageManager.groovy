@@ -66,8 +66,8 @@ gpgcheck=${(key!=null)?1:0}""";
   }
 
   public boolean isInstalled(PackageInstance pkg) {
-    def text = shUser.exec("yum --color=never -d 0 list ${pkg.name}").out.join('\n')
-    return (text =~ /(?m)^${pkg.name}.*installed$/).find()
+    def text = shUser.exec("yum --color=never -d 0 info ${pkg.name}").out.join('\n')
+    return (text =~ /(?m)^Repo\s*:\s*installed/).find()
   }
 
   public List<Service> getServices(PackageInstance pkg) {
