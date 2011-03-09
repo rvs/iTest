@@ -69,7 +69,8 @@ class AptCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
   public int remove(PackageInstance pkg) {
-    shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y remove ${pkg.name}");
+    // All config files need to be removed as well.
+    shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y purge ${pkg.name}");
     return shRoot.getRet();
   }
 
