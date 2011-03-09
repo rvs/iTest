@@ -166,6 +166,9 @@
                 } catch (java.lang.IndexOutOfBoundsException ioob) {
                   log.error "No lzo.jar has been found under ${HADOOP_HOME}/lib. Check your installation.";
                   throw ioob;
+                } catch (java.lang.NullPointerException npe) {
+                  log.error "No ${HADOOP_HOME}/lib exists. Check your installation.";
+                  throw npe;
                 }
               </source>
             </configuration>
