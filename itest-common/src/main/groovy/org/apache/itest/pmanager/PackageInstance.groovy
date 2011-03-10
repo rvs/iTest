@@ -25,8 +25,8 @@ abstract class PackageInstance {
   String version
 
   abstract public boolean isInstalled()
-  abstract public void install()
-  abstract public void remove()
+  abstract public int install()
+  abstract public int remove()
   abstract public List<Service> getServices()
 
   /**
