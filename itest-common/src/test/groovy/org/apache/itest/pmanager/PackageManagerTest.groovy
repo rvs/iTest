@@ -51,6 +51,15 @@ class PackageManagerTest {
   }
 
   @Test
+  void testGetContentList() {
+    PackageInstance cron = PackageInstance.getPackageInstance(pmgr, "cron");
+    List<String> list = pmgr.getContentList(cron);
+    list.each { println it};
+
+    assertTrue("cron package is expected to contain at least ten files", list.size() > 10);
+  }
+
+  @Test
   void testRepoManagement() {
     String repo_id = "test-repo";
     assertEquals("Can not add repo",

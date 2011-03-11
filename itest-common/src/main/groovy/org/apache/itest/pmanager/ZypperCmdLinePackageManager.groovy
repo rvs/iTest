@@ -75,4 +75,10 @@ class ZypperCmdLinePackageManager extends PackageManager {
     shUser.exec("rpm -ql ${pkg.name} | sed -ne '/^.etc.rc.d./s#^.etc.rc.d.##p'")
     return shUser.out.collect({new Service("$it")})
   }
+
+  @Override
+  List<String> getContentList(PackageInstance pkg) {
+    shUser.exec("rpm -ql ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
 }

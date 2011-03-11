@@ -83,4 +83,10 @@ class AptCmdLinePackageManager extends PackageManager {
     shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name} | sed -ne '/^.etc.init.d./s#^.etc.init.d.##p'")
     return shUser.out.collect({new Service("$it")})
   }
+
+  @Override
+  public List<String> getContentList(PackageInstance pkg) {
+    shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
 }

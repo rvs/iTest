@@ -74,4 +74,10 @@ gpgcheck=${(key!=null)?1:0}""";
     shUser.exec("rpm -ql ${pkg.name} | sed -ne '/^.etc.rc.d.init.d./s#^.etc.rc.d.init.d.##p'")
     return shUser.out.collect({new Service("$it")})
   }
+
+  @Override
+  List<String> getContentList(PackageInstance pkg) {
+    shUser.exec("rpm -ql ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
 }

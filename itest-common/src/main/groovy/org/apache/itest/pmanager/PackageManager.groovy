@@ -116,6 +116,14 @@ public abstract class PackageManager {
   abstract public List<Service> getServices(PackageInstance pkg)
 
   /**
+   * List a content of a given package
+   *
+   * @param pkg a package that is expected to provide >1 entry in its content
+   * @return list file and directory names belong to the package.
+   */
+  abstract public List<String> getContentList(PackageInstance pkg);
+
+  /**
    * type of a package manager. expected to be overwritten by concrete subclasses implementing
    * particular package managers (yum, apt, zypper, etc.)
    */

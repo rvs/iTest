@@ -25,9 +25,8 @@ class JarContentTest {
   @Test
   void testJarContent() {
     def env = System.getenv();
-    JarContent.listContent(env['JAVA_HOME'] + '/lib/tools.jar').each {
-      println it;
-    };
+    def list = JarContent.listContent(env['JAVA_HOME'] + '/lib/tools.jar');
+    assertTrue("Jar content should be greater than 10", list.size() > 10);
   }
   @Test(expected = IOException.class)
   void testJarContentNeg() {
@@ -51,7 +50,6 @@ class JarContentTest {
     File dir = new File(destination);
     int count = 0
     dir.eachFileRecurse {
-      println it;
       if (it.name.endsWith(".class"))
         count++
     }
