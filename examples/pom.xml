@@ -99,6 +99,7 @@
     <module>pig</module>
     <module>hive</module>
     <module>hadoop</module>
+    <module>oozie</module>
   </modules>
 
   <dependencyManagement>
