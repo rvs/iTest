@@ -28,7 +28,8 @@ class ServiceTest {
 
   @Test
   void testStatus() {
-    assertTrue("Expected a non-empty string as an ssh service status", ssh.status() != "")
+    println 'Status ' + ssh.status()
+    assertTrue("Expected a not-null and non-empty string as an ssh service status", ssh.status() != null && ssh.status() != "")
     assertEquals("wrong service name", name, ssh.getName());
   }
 }

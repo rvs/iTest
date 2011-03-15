@@ -67,7 +67,7 @@ class Service {
    */
   public String status() {
     sh.exec("service $svc_name status");
-    return shRoot.out;
+    return sh.out;
   }
   /**
    * Returns name of the service
