@@ -19,6 +19,7 @@ package org.apache.itest
 
 import org.junit.Test
 import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertEquals
 
 class JarContentTest {
   @Test
@@ -56,6 +57,15 @@ class JarContentTest {
     }
     assertTrue('Expect more than one file', count > 1);
     dir.deleteDir();
+  }
+
+  @Test
+  void testGetJarName() {
+    assertEquals("Should've find tools.jar file",
+        'tools.jar',
+        JarContent.getJarName(System.getenv()['JAVA_HOME'] + '/lib/', 't.*.jar'));
+    assertEquals("Should not have found tools.jar file", null,
+        JarContent.getJarName(System.getenv()['JAVA_HOME'] + '/lib/', 'nosuch-file.*.jar'));
   }
 
   // ClassNotException is expected to be thrown in case of non-existing class

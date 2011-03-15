@@ -21,8 +21,11 @@ import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipException
+import org.apache.commons.logging.LogFactory
+import org.apache.commons.logging.Log
 
 public abstract class JarContent {
+  static private Log LOG = LogFactory.getLog(JarContent.class);
 
   static {
     // Calling MOP hooks
@@ -140,6 +143,25 @@ public abstract class JarContent {
   public static URL getJarURL(String className) throws ClassNotFoundException {
     Class cl = Class.forName(className)
     return getJarURL(cl)
+  }
+
+  /**
+   * Returns full name of a jar file by a pattern
+   * @param baseDir to look for a jar under
+   * @param namePattern to look for a jar by
+   * @return name of the jar file if found; <code>null</code> otherwise
+   */
+  public static String getJarName(String baseDir, String namePattern) {
+    try {
+      return new File(baseDir).list(
+          [accept: {d, f -> f ==~ /$namePattern/ }] as FilenameFilter
+      ).toList().get(0);
+    } catch (java.lang.IndexOutOfBoundsException ioob) {
+      LOG.error ("No $namePattern has been found under $baseDir. Check your installation.");
+    } catch (java.lang.NullPointerException npe) {
+      LOG.error("No $baseDir exists. Check your installation.");
+    }
+    return null;
   }
 
   /**
