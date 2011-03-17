@@ -63,6 +63,10 @@ class Shell {
     def proc = user ? "sudo -u $user PATH=${System.getenv('PATH')} $shell".execute() :
                                     "$shell".execute()
     script = args.join("\n")
+    if (LOG.isTraceEnabled()) {
+        LOG.trace("${shell} << __EOT__\n${script}\n__EOT__");
+    }
+
     Thread.start {
       def writer = new PrintWriter(new BufferedOutputStream(proc.out))
       writer.println(script)
@@ -75,7 +79,6 @@ class Shell {
     err = proc.err.readLines()
 
     if (LOG.isTraceEnabled()) {
-        LOG.trace("${shell} << __EOT__\n${script}\n__EOT__");
         if (ret != 0) {
            LOG.trace("return: $ret");
         }
