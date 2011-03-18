@@ -47,6 +47,12 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-examples</artifactId>
+      <version>0.20.2-cdh3u0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
