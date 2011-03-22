@@ -55,7 +55,7 @@ class Shell {
    * After executing the script its return code can be accessed as getRet(),
    * stdout as getOut() and stderr as getErr(). The script itself can be accessed
    * as getScript()
-   *
+   * WARNING: it isn't thread safe
    * @param args shell script split into multiple Strings
    * @return Shell object for chaining
    */
@@ -72,11 +72,21 @@ class Shell {
       writer.println(script)
       writer.close()
     }
-    proc.waitFor()
-
-    ret = proc.exitValue()
+    ByteArrayOutputStream baosErr = new ByteArrayOutputStream(4096);
+    proc.consumeProcessErrorStream(baosErr);
     out = proc.in.readLines()
-    err = proc.err.readLines()
+
+    // Possibly a bug in String.split as it generates a 1-element array on an
+    // empty String
+    if (baosErr.size() != 0) {
+      err = baosErr.toString().split('\n');
+    }
+    else {
+      err = new ArrayList<String>();
+    }
+
+    proc.waitFor()
+    ret = proc.exitValue()
 
     if (LOG.isTraceEnabled()) {
         if (ret != 0) {

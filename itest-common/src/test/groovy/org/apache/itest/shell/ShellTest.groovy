@@ -31,8 +31,8 @@ class ShellTest {
     sh.exec('A=a ; r() { return $1; } ; echo $A ; r `id -u`')
 
     assertFalse("${sh.script} exited with a non-zero status", sh.ret == 0)
-    assertEquals("got wrong stdout ${sh.out}", sh.out[0], "a")
-    assertEquals("got extra stderr ${sh.err}", sh.err.size(), 0)
+    assertEquals("got wrong stdout ${sh.out}", "a", sh.out[0])
+    assertEquals("got extra stderr ${sh.err}", 0, sh.err.size())
   }
 
   @Test
@@ -42,8 +42,8 @@ class ShellTest {
     sh.setUser('root')
     sh.exec('r() { return $1; } ; r `id -u`')
 
-    assertEquals("${sh.script} exited with a non-zero status", sh.ret, 0)
-    assertEquals("got extra stdout ${sh.out}", sh.out.size(), 0)
-    assertEquals("got extra stderr ${sh.err}", sh.err.size(), 0)
+    assertEquals("${sh.script} exited with a non-zero status", 0, sh.ret)
+    assertEquals("got extra stdout ${sh.out}", 0, sh.out.size())
+    assertEquals("got extra stderr ${sh.err}", 0, sh.err.size())
   }
 }
