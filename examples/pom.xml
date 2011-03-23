@@ -102,6 +102,7 @@
     <module>oozie</module>
     <module>sqoop</module>
     <module>flume</module>
+    <module>hbase</module>
   </modules>
 
   <dependencyManagement>
