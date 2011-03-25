@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>smoke-tests</artifactId>
+      <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cloudera.itest</groupId>
+  <artifactId>sqoopintegration</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>sqoopintegration</name>
+
+  <properties>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.jar>${project.build.directory}/sqoop-integration-1.0-SNAPSHOT-tests.jar</org.codehaus.groovy.maven.jar>
+
+    <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
+    <org.apache.maven-dependency-plugin.artifactId>sqoop-integration</org.apache.maven-dependency-plugin.artifactId>
+    <org.apache.maven-dependency-plugin.version>1.0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudera.itest</groupId>
+      <artifactId>sqoop-integration</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <systemPropertyVariables>
+            <MYSQL_ROOTPW></MYSQL_ROOTPW>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
