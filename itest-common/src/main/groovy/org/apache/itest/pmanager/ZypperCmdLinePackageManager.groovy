@@ -23,12 +23,11 @@ class ZypperCmdLinePackageManager extends PackageManager {
   static String type  = "zypper";
   static String repository_registry = "/etc/zypp/repos.d/%s.repo";
   
-  private String key_opts = "--no-gpg-checks";
+  private String key_opts = "--gpg-auto-import-keys";
 
   public void setDefaults(String defaults) {}
 
   public int addBinRepo(String record, String url, String key, String cookie) {
-    // FIXME: override key_opts when we start getting a real key
     shRoot.exec("zypper ${key_opts} -q -n ar -c -n '${record}' $url ${cookie.replaceAll(/\s+/, '-')}");
     return shRoot.getRet();
   }
@@ -39,7 +38,7 @@ class ZypperCmdLinePackageManager extends PackageManager {
   }
 
   public int refresh() {
-    shRoot.exec("zypper ${key_opts} refresh");
+    shRoot.exec("zypper ${key_opts} -n refresh");
     return shRoot.getRet();
   }
 
