@@ -10,31 +10,23 @@
       <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.cloudera.itest</groupId>
-  <artifactId>hadoopsmokes</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>hadoopsmokes.smoke-tests</artifactId>
+  <version>${hadoop-smoke.version}</version>
   <name>hadoopsmokes</name>
 
   <properties>
     <hadoopsmoke.copy>${project.build.directory}/hadoopsmoke.jar</hadoopsmoke.copy>
-    <hadoopsmoke.ver>1.0-SNAPSHOT</hadoopsmoke.ver>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
-    <org.codehaus.groovy.maven.jar>${hadoopsmoke.copy}/hadoopsmoke-${hadoopsmoke.ver}-tests.jar</org.codehaus.groovy.maven.jar>
+    <org.codehaus.groovy.maven.jar>${hadoopsmoke.copy}/hadoopsmoke-${hadoop-smoke.version}-tests.jar</org.codehaus.groovy.maven.jar>
 
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>hadoopsmoke</org.apache.maven-dependency-plugin.artifactId>
-    <org.apache.maven-dependency-plugin.version>${hadoopsmoke.ver}</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.version>${hadoop-smoke.version}</org.apache.maven-dependency-plugin.version>
     <org.apache.maven-dependency-plugin.output>${hadoopsmoke.copy}</org.apache.maven-dependency-plugin.output>
     <org.apache.maven-dependency-plugin.pattern>**/*</org.apache.maven-dependency-plugin.pattern>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.cloudera.itest</groupId>
-      <artifactId>hadoopsmoke</artifactId>
-      <version>${hadoopsmoke.ver}</version>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -44,14 +36,13 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
-      <version>0.20.2-cdh3u0</version>
-      <scope>test</scope>
     </dependency>
+    <!-- explicit dependency is needed to pull down transient deps. such as hadoop-examples -->
     <dependency>
       <groupId>${org.apache.maven-dependency-plugin.groupId}</groupId>
       <artifactId>${org.apache.maven-dependency-plugin.artifactId}</artifactId>
-      <version>${hadoopsmoke.ver}</version>
-      <scope>test</scope>
+      <version>${hadoop-smoke.version}</version>
+      <type>test-jar</type>
     </dependency>
   </dependencies>
 

@@ -10,47 +10,35 @@
       <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.cloudera.itest</groupId>
-  <artifactId>hadooplong-test</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>hadooplong-test.smoke-tests</artifactId>
+  <version>${stack-smokes.version</version>
+  <name>hadooplongevity</name>
 
   <properties>
     <hadooplong.copy>${project.build.directory}/hadooplong.jar</hadooplong.copy>
-    <hadooplong.ver>1.0-SNAPSHOT</hadooplong.ver>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
-    <org.codehaus.groovy.maven.jar>${hadooplong.copy}/hadooplong-${hadooplong.ver}-tests.jar</org.codehaus.groovy.maven.jar>
+    <org.codehaus.groovy.maven.jar>${hadooplong.copy}/hadooplong-${hadooplong.version}-tests.jar</org.codehaus.groovy.maven.jar>
 
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>hadooplong</org.apache.maven-dependency-plugin.artifactId>
-    <org.apache.maven-dependency-plugin.version>${hadooplong.ver}</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.version>${hadooplong.version}</org.apache.maven-dependency-plugin.version>
     <org.apache.maven-dependency-plugin.output>${hadooplong.copy}</org.apache.maven-dependency-plugin.output>
     <org.apache.maven-dependency-plugin.pattern></org.apache.maven-dependency-plugin.pattern>
+    <hadooplong.version>1.0-SNAPSHOT</hadooplong.version>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
-    </repository>
-    <repository>
-      <id>releases</id>
-      <name>Cloudera Releases</name>
-      <url>https://repository.cloudera.com/content/groups/cdh-releases-rcs/</url>
-    </repository>
-  </repositories>
 
   <dependencies>
     <dependency>
       <groupId>com.cloudera.itest</groupId>
       <artifactId>hadooplong</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${hadooplong.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-examples</artifactId>
-      <version>0.20.2-cdh3u0-SNAPSHOT</version>
+      <version>${hadoop.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

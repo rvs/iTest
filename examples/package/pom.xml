@@ -10,7 +10,7 @@
       <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.cloudera.itest</groupId>
-  <artifactId>packagesmokes</artifactId>
+  <artifactId>packagesmokes.smoke-tests</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>packagesmokes</name>
 
@@ -30,7 +30,7 @@
 
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>packagesmoke</org.apache.maven-dependency-plugin.artifactId>
-    <org.apache.maven-dependency-plugin.version>1.0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.version>${package-smoke.version}</org.apache.maven-dependency-plugin.version>
 
     <org.apache.maven-failsafe-plugin.testInclude>**/PackagesSuite*</org.apache.maven-failsafe-plugin.testInclude>
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
@@ -46,9 +46,7 @@
     <dependency>
       <groupId>com.cloudera.itest</groupId>
       <artifactId>packagesmoke</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>test-jar</type>
-      <scope>test</scope>
+      <version>${package-smoke.version}</version>
     </dependency>
   </dependencies>
 

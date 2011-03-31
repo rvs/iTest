@@ -62,6 +62,24 @@
         MAINTAINER property: not to be overridden by users
     -->
     <maven.repository>https://repository.cloudera.com/content/repositories/testsnaps/</maven.repository>
+
+    <!--
+      BOM definitions
+    -->
+    <hadoop.version>0.20.2-cdh3u0</hadoop.version>
+    <hadoop-smoke.version>1.0-SNAPSHOT</hadoop-smoke.version>
+    <flume-smoke.version>1.0-SNAPSHOT</flume-smoke.version>
+    <hbase-smoke.version>1.0-SNAPSHOT</hbase-smoke.version>
+    <hive-smoke.version>1.0-SNAPSHOT</hive-smoke.version>
+    <oozie-smoke.version>1.0-SNAPSHOT</oozie-smoke.version>
+    <package-smoke.version>1.0-SNAPSHOT</package-smoke.version>
+    <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
+    <pig.version>0.8.0-cdh3u0</pig.version>
+    <sqoop.version>1.2.0-cdh3u0</sqoop.version>
+    <sqoop-integration.version>1.0-SNAPSHOT</sqoop-integration.version>
+    <!--
+      End of BOM definitions
+    -->
   </properties>
 
   <repositories>
@@ -135,6 +153,74 @@
         <artifactId>gmaven-runtime-1.6</artifactId>
         <version>1.0</version>
       </dependency>
+
+<!--
+  BOM definitions
+-->
+<!-- Product artifacts -->
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-core</artifactId>
+        <version>${hadoop.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pig</groupId>
+        <artifactId>pig</artifactId>
+        <version>${pig.version}</version>
+        <scope>test</scope>
+      </dependency>
+<!-- Test artifacts -->
+      <dependency>
+        <groupId>com.cloudera.itest</groupId>
+        <artifactId>hadoopsmoke</artifactId>
+        <version>${hadoop-smoke.version}</version>
+        <!-- FIXME: test-jar seems to be an suboptimal thing to use for
+          artifacts of this kind: it causes all sorts of the issue such as
+          need to explicitly specify the version of the artifact
+          in the module POM file.
+          Same goes for the rest of the bunch here-->
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.cloudera.itest</groupId>
+        <artifactId>hbasesmoke</artifactId>
+        <version>${hbase-smoke.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.cloudera.itest</groupId>
+        <artifactId>hivesmoke</artifactId>
+        <version>${hive-smoke.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.cloudera.itest</groupId>
+        <artifactId>ooziesmoke</artifactId>
+        <version>${oozie-smoke.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.pig</groupId>
+        <artifactId>pigsmoke</artifactId>
+        <version>${pig.smoke.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.cloudera.itest</groupId>
+        <artifactId>packagesmoke</artifactId>
+        <version>${package-smoke.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+
+<!--
+  End of BOM definitions
+-->
+
     </dependencies>
   </dependencyManagement>
 

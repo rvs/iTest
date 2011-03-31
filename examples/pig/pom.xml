@@ -9,14 +9,13 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudera.itest</groupId>
-  <artifactId>pigsmokes</artifactId>
+  <artifactId>pigsmokes.smoke-tests</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>pigsmokes</name>
 
   <properties>
     <pig.jar.copy>${project.build.directory}/pig.jar</pig.jar.copy>
-    <pig.smoke.version>0.8.0-SNAPSHOT</pig.smoke.version>
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${pig.jar.copy}/pigsmoke-${pig.smoke.version}.jar</org.codehaus.groovy.maven.jar>
 
@@ -27,41 +26,18 @@
     <org.apache.maven-dependency-plugin.pattern>test/data/**/*</org.apache.maven-dependency-plugin.pattern>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
-    </repository>
-    <repository>
-      <id>releases</id>
-      <name>Cloudera Releases</name>
-      <url>https://repository.cloudera.com/content/groups/cdh-releases-rcs/</url>
-    </repository>
-    <repository>
-      <id>cdh-snapshots</id>
-      <name>Cloudera Releases</name>
-      <url>https://repository.cloudera.com/content/repositories/snapshots/</url>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.pig</groupId>
       <artifactId>pig</artifactId>
-      <version>0.8.0-CDH3B4</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.pig</groupId>
       <artifactId>pigsmoke</artifactId>
-      <version>${pig.smoke.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
-      <version>0.20.2-CDH3B4</version>
     </dependency>
   </dependencies>
 

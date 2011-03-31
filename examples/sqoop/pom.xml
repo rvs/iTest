@@ -10,7 +10,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudera.itest</groupId>
-  <artifactId>sqoopsmoke</artifactId>
+  <artifactId>sqoopsmoke.smoke-tests</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>sqoopsmoke</name>
 
@@ -19,10 +19,10 @@
     <org.codehaus.maven-failsafe-plugin.dbname>db2</org.codehaus.maven-failsafe-plugin.dbname>
 
     <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
-    <org.codehaus.groovy.maven.jar>${project.build.directory}/sqoop-1.2.0-cdh3u0-SNAPSHOT-tests.jar</org.codehaus.groovy.maven.jar>
+    <org.codehaus.groovy.maven.jar>${project.build.directory}/sqoop-${org.apache.maven-dependency-plugin.version}-tests.jar</org.codehaus.groovy.maven.jar>
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.sqoop</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>sqoop</org.apache.maven-dependency-plugin.artifactId>
-    <org.apache.maven-dependency-plugin.version>1.2.0-cdh3u0-SNAPSHOT</org.apache.maven-dependency-plugin.version>
+    <org.apache.maven-dependency-plugin.version>${sqoop.version}</org.apache.maven-dependency-plugin.version>
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
   </properties>
 
@@ -32,19 +32,10 @@
       <artifactId>${org.apache.maven-dependency-plugin.artifactId}</artifactId>
       <version>${org.apache.maven-dependency-plugin.version}</version>
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>${org.apache.maven-dependency-plugin.groupId}</groupId>
-      <artifactId>${org.apache.maven-dependency-plugin.artifactId}</artifactId>
-      <version>${org.apache.maven-dependency-plugin.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
-      <version>0.20.2-cdh3u0</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
