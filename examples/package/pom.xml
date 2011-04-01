@@ -31,14 +31,9 @@
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>packagesmoke</org.apache.maven-dependency-plugin.artifactId>
     <org.apache.maven-dependency-plugin.version>${package-smoke.version}</org.apache.maven-dependency-plugin.version>
-
-    <org.apache.maven-failsafe-plugin.testInclude>**/PackagesSuite*</org.apache.maven-failsafe-plugin.testInclude>
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
 
-    <!-- FIXME: the 2 bellow could be made into Groovy code defaults if they are not set -->
-    <org.codehaus.groovy.maven.jar>
-      ${project.build.directory}/${org.apache.maven-dependency-plugin.artifactId}-${org.apache.maven-dependency-plugin.version}-tests.jar
-    </org.codehaus.groovy.maven.jar>
+    <org.apache.maven-failsafe-plugin.testInclude>**/PackagesSuite*</org.apache.maven-failsafe-plugin.testInclude>
   </properties>
 
   <dependencies>

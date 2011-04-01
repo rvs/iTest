@@ -15,8 +15,6 @@
   <name>hivesmokes</name>
 
   <properties>
-    <org.codehaus.groovy.maven.jar>${project.build.directory}/hivesmoke-${hive-smoke.version}-tests.jar</org.codehaus.groovy.maven.jar>
-
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>hivesmoke</org.apache.maven-dependency-plugin.artifactId>
     <org.apache.maven-dependency-plugin.version>${hive-smoke.version}</org.apache.maven-dependency-plugin.version>
