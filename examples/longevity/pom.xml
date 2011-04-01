@@ -16,7 +16,6 @@
 
   <properties>
     <hadooplong.copy>${project.build.directory}/hadooplong.jar</hadooplong.copy>
-    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${hadooplong.copy}/hadooplong-${hadooplong.version}-tests.jar</org.codehaus.groovy.maven.jar>
 
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>

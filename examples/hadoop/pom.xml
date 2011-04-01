@@ -16,7 +16,6 @@
 
   <properties>
     <hadoopsmoke.copy>${project.build.directory}/hadoopsmoke.jar</hadoopsmoke.copy>
-    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${hadoopsmoke.copy}/hadoopsmoke-${hadoop-smoke.version}-tests.jar</org.codehaus.groovy.maven.jar>
 
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>

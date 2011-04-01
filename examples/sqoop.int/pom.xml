@@ -15,7 +15,6 @@
   <name>sqoopintegration</name>
 
   <properties>
-    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <org.codehaus.groovy.maven.jar>${project.build.directory}/sqoop-integration-${sqoop-integration.version}-tests.jar</org.codehaus.groovy.maven.jar>
 
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>

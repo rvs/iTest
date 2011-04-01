@@ -32,7 +32,7 @@
         destination folder where all temp. files will be copied for further processing, REQUIRED
         Should be defined in a sub-module
     -->
-    <org.codehaus.groovy.maven.destination></org.codehaus.groovy.maven.destination>
+    <org.codehaus.groovy.maven.destination>${project.build.testOutputDirectory}</org.codehaus.groovy.maven.destination>
     <!--
         test artifact jar name to be processes e.g. data unpacking, etc, REQUIRED
         Should be defined in a sub-module

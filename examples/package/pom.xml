@@ -39,7 +39,6 @@
     <org.codehaus.groovy.maven.jar>
       ${project.build.directory}/${org.apache.maven-dependency-plugin.artifactId}-${org.apache.maven-dependency-plugin.version}-tests.jar
     </org.codehaus.groovy.maven.jar>
-    <org.codehaus.groovy.maven.destination>${project.build.directory}/test-classes</org.codehaus.groovy.maven.destination>
   </properties>
 
   <dependencies>
