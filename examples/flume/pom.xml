@@ -15,10 +15,6 @@
   <name>flumesmokes</name>
 
   <properties>
-    <org.codehaus.groovy.maven.jar>
-      ${project.build.directory}/flumesmoke-${flume-smoke.version}-tests.jar
-    </org.codehaus.groovy.maven.jar>
-
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>flumesmoke</org.apache.maven-dependency-plugin.artifactId>
     <org.apache.maven-dependency-plugin.version>${flume-smoke.version}</org.apache.maven-dependency-plugin.version>

@@ -340,14 +340,23 @@
             <configuration>
               <source><![CDATA[
                 import org.apache.itest.*
+ 
+                def nm   = project.properties['org.apache.maven-dependency-plugin.artifactId'];
+                def vers = project.properties['org.apache.maven-dependency-plugin.version'];
+                def trgt = project.build.directory;
 
-                if (project.properties['org.codehaus.groovy.maven.destination'] &&
-                    project.properties['org.codehaus.groovy.maven.jar']) {
-                     def prefix = project.properties['org.codehaus.groovy.maven.destination'];
-                     JarContent.listContent(project.properties['org.codehaus.groovy.maven.jar']).each {
-                     TestListUtils.touchTestFiles(prefix, it);
-                     };
-                }]]>
+                def src = project.properties['org.codehaus.groovy.maven.jar'] ?: 
+                          "${trgt}/${nm}-${vers}-tests.jar";
+                def prefix = project.properties['org.codehaus.groovy.maven.destination'];
+
+                try { 
+                  JarContent.listContent(src).each {
+                    TestListUtils.touchTestFiles(prefix, it);
+                  };
+                } catch (Throwable ex) {
+                  println "[WARNING] No test classes were found inside of: ${src}";
+                }
+                ]]>
               </source>
             </configuration>
           </execution>

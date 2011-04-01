@@ -17,8 +17,6 @@
   <properties>
     <OOZIE_URL>${env.OOZIE_URL}</OOZIE_URL>
 
-    <org.codehaus.groovy.maven.jar>${project.build.directory}/ooziesmoke-${oozie-smoke.version}-tests.jar</org.codehaus.groovy.maven.jar>
-
     <org.apache.maven-dependency-plugin.groupId>com.cloudera.itest</org.apache.maven-dependency-plugin.groupId>
     <org.apache.maven-dependency-plugin.artifactId>ooziesmoke</org.apache.maven-dependency-plugin.artifactId>
     <org.apache.maven-dependency-plugin.version>${oozie-smoke.version}</org.apache.maven-dependency-plugin.version>
