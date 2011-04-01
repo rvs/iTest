@@ -216,6 +216,13 @@
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>com.cloudera.sqoop</groupId>
+        <artifactId>sqoop</artifactId>
+        <version>${sqoop.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
 
 <!--
   End of BOM definitions
