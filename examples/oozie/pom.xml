@@ -27,6 +27,7 @@
       <groupId>com.cloudera.itest</groupId>
       <artifactId>ooziesmoke</artifactId>
       <version>${oozie-smoke.version}</version>
+      <type>test-jar</type>
     </dependency>
   </dependencies>
 
