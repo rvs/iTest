@@ -6,12 +6,12 @@
   <parent>
       <groupId>com.cloudera.itest</groupId>
       <artifactId>smoke-tests</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0-cdh3u0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudera.itest</groupId>
   <artifactId>sqoopsmoke.smoke-tests</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${sqoop.version}</version>
   <name>sqoopsmoke</name>
 
   <properties>
