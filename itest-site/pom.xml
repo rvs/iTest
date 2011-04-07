@@ -9,7 +9,29 @@
   <name>iTest</name>
   <url>http://cloudera.github.com/iTest</url>
   <inceptionYear>2011</inceptionYear>
-
+  <developers>
+    <developer>
+      <id>c0s</id>
+      <name>Konstantin Boudnik</name>
+    </developer>
+    <developer>
+      <id>rvs</id>
+      <name>Roman Shaposhnik</name>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>Apache ASF 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+    </license>
+  </licenses>
+  <issueManagement>
+    <system>github</system>
+    <url>https://github.com/cloudera/iTest/issues</url>
+  </issueManagement>
+  <scm>
+    <url>http://github.com/cloudera/iTest</url>
+  </scm>
   <distributionManagement>
     <site>
       <id>github-project-site</id>

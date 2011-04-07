@@ -23,7 +23,7 @@
       </answer>
     </faq>
     <faq id="why">
-      <question>Why do you need iTest?</question>
+      <question>Why do I need iTest?</question>
        <answer>
          <p>
           if you need to have a robust environment for your software validation
