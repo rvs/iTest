@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -46,7 +46,7 @@ public abstract class PackageManager {
    * specific keys (records) referencing tuples of information describing a repository
    *
    * @param record a package manager specific KEY portion of the repository registration (null is default)
-   * @param a full description of the repository in a native format
+   * @param descr a full description of the repository in a native format
    * @return int return code of the operation: o in case of success, non-zero otherwise
    */
   public int addBinRepo(String record, String descr) {
