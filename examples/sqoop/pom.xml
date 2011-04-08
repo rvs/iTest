@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudera.itest</groupId>
   <artifactId>sqoopsmoke.smoke-tests</artifactId>
-  <version>${sqoop.version}</version>
+  <version>1.0-SNAPSHOT</version>
   <name>sqoopsmoke</name>
 
   <properties>
