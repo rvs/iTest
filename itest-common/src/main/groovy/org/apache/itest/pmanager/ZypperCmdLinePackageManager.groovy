@@ -47,7 +47,7 @@ class ZypperCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
 
-  public List<PackageInstance> search(String name, String version) {
+  public List<PackageInstance> search(String name) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("zypper search $name").out.each {
       packages.add(PackageInstance.getPackageInstance (this, ((it =~ /^(.*|)(.*)(|.*)$/)[0][2])))
@@ -55,8 +55,68 @@ class ZypperCmdLinePackageManager extends PackageManager {
     return packages
   }
 
+  private List parseMetaOutput(PackageInstance p, List<String> text) {
+    def packages = new ArrayList<PackageInstance>();
+    PackageInstance pkg = p;
+    String curMetaKey = "";
+    text.each {
+      if (curMetaKey == "description") {
+        pkg.meta[curMetaKey] <<= "\n$it";
+      } else {
+        def m = (it =~ /(\S+):(.*)/);
+        if (m.size()) {
+          String[] matcher = m[0];
+          if ("Name" == matcher[1] && !p) {
+            pkg = PackageInstance.getPackageInstance(this, matcher[2]);
+            packages.add(pkg);
+          } else if (pkg) {
+            curMetaKey = matcher[1].toLowerCase();
+            pkg.meta[curMetaKey] = matcher[2].trim();
+          }
+        }
+      }
+    }
+
+    (packages.size() == 0 ? [p] : packages).each {
+      if (it.meta["version"]) {
+        it.version = it.meta["version"].replaceAll(/-.*$/,"");
+        it.release = it.meta["version"].replaceAll(/^[^-]*-/,"");
+      }
+      it.arch = it.meta["arch"] ?: it.arch;
+    };
+    return packages;
+  }
+
+  public List<PackageInstance> lookup(String name) {
+    return parseMetaOutput(null, shUser.exec("zypper info $name").out);
+  }
+
   public int install(PackageInstance pkg) {
+    // maintainer is missing from RPM ?
+    String q = """
+Name: %{NAME}
+Arch: %{ARCH}
+Version: %{VERSION}
+Release: %{RELEASE}
+Summary: %{SUMMARY}
+URL: %{URL}
+License: %{LICENSE}
+Vendor: %{VENDOR}
+Group: %{GROUP}
+Depends: [%{REQUIRES}\t]
+Breaks: [%{CONFLICTS}\t]
+Replaces: [%{OBSOLETES}\t]
+Provides: [%{PROVIDES}\t]
+Distribution: %{DISTRIBUTION}
+OS: %{OS}
+Source: %{SOURCERPM}
+Description: %{DESCRIPTION}
+"""
     shRoot.exec("zypper -q -n install -l -y ${pkg.name}");
+    if (shRoot.getRet() == 0) {
+      pkg.installMessages = shRoot.getOut().join('\n');
+      parseMetaOutput(pkg, shUser.exec("rpm -q --qf '$q' ${pkg.name}").out);
+    }
     return shRoot.getRet();
   }
 
@@ -78,6 +138,18 @@ class ZypperCmdLinePackageManager extends PackageManager {
   @Override
   List<String> getContentList(PackageInstance pkg) {
     shUser.exec("rpm -ql ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
+
+  @Override
+  List<String> getConfigs(PackageInstance pkg) {
+    shUser.exec("rpm -qc ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
+
+  @Override
+  List<String> getDocs(PackageInstance pkg) {
+    shUser.exec("rpm -qd ${pkg.name}");
     return shUser.out.collect({"$it"});
   }
 }

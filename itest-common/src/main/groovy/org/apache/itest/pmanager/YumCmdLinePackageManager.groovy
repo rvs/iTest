@@ -46,7 +46,7 @@ gpgcheck=${(key!=null)?1:0}""";
     return shRoot.getRet();
   }
 
-  public List<PackageInstance> search(String name, String version) {
+  public List<PackageInstance> search(String name) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("yum --color=never -d 0 search $name").out.each {
       if (!(it =~ /^(===================| +: )/)) {
@@ -56,10 +56,69 @@ gpgcheck=${(key!=null)?1:0}""";
     return packages
   }
 
+  private List parseMetaOutput(PackageInstance p, List<String> text) {
+    def packages = new ArrayList<PackageInstance>();
+    PackageInstance pkg = p;
+    String curMetaKey = "";
+    text.each {
+      if (curMetaKey == "description") {
+        pkg.meta[curMetaKey] <<= "\n$it";
+      } else {
+        def m = (it =~ /(\S+) *: *(.+)/);
+        if (m.size()) {
+          String[] matcher = m[0];
+          if ("Name" == matcher[1] && !p) {
+            pkg = PackageInstance.getPackageInstance(this, matcher[2]);
+            packages.add(pkg);
+          } else if (pkg) {
+            curMetaKey = matcher[1].toLowerCase();
+            pkg.meta[curMetaKey] = matcher[2].trim();
+          }
+        }
+      }
+    }
+
+    (packages.size() == 0 ? [p] : packages).each {
+      it.version = it.meta["version"] ?: it.version;
+      it.release = it.meta["release"] ?: it.release;
+      it.arch = it.meta["arch"] ?: it.arch;
+    };
+    return packages;
+  }
+
+  public List<PackageInstance> lookup(String name) {
+    return parseMetaOutput(null, shUser.exec("yum --color=never -d 0 info $name").out);
+  }
+
   public int install(PackageInstance pkg) {
+    // maintainer is missing from RPM ?
+    String q = """
+Name: %{NAME}
+Arch: %{ARCH}
+Version: %{VERSION}
+Release: %{RELEASE}
+Summary: %{SUMMARY}
+URL: %{URL}
+License: %{LICENSE}
+Vendor: %{VENDOR}
+Group: %{GROUP}
+Depends: [%{REQUIRES}\t]
+Breaks: [%{CONFLICTS}\t]
+Replaces: [%{OBSOLETES}\t]
+Provides: [%{PROVIDES}\t]
+Distribution: %{DISTRIBUTION}
+OS: %{OS}
+Source: %{SOURCERPM}
+Description: %{DESCRIPTION}
+"""
     shRoot.exec("yum -y install ${pkg.name}");
+    if (shRoot.getRet() == 0) {
+      pkg.installMessages = shRoot.getOut().join('\n');
+      parseMetaOutput(pkg, shUser.exec("rpm -q --qf '$q' ${pkg.name}").out);
+    }
     return shRoot.getRet();
   }
+
   public int remove(PackageInstance pkg) {
     shRoot.exec("yum -y erase ${pkg.name}");
     return shRoot.getRet();
@@ -78,6 +137,18 @@ gpgcheck=${(key!=null)?1:0}""";
   @Override
   List<String> getContentList(PackageInstance pkg) {
     shUser.exec("rpm -ql ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
+
+  @Override
+  List<String> getConfigs(PackageInstance pkg) {
+    shUser.exec("rpm -qc ${pkg.name}");
+    return shUser.out.collect({"$it"});
+  }
+
+  @Override
+  List<String> getDocs(PackageInstance pkg) {
+    shUser.exec("rpm -qd ${pkg.name}");
     return shUser.out.collect({"$it"});
   }
 }

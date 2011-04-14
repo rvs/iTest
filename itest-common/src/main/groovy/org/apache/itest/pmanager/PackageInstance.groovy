@@ -20,14 +20,28 @@ package org.apache.itest.pmanager
 import org.apache.itest.posix.Service
 
 abstract class PackageInstance {
-  PackageManager mgr
-  String name
-  String version
+  PackageManager mgr;
 
-  abstract public boolean isInstalled()
-  abstract public int install()
-  abstract public int remove()
-  abstract public List<Service> getServices()
+  String name;
+  String version;
+  String release;
+  String arch;
+
+  Map meta = [:];
+  String installMessages;
+
+  protected List<String> files;
+  protected List<String> docs;
+  protected List<String> configs;
+  protected List<Service> services;
+
+  abstract public boolean isInstalled();
+  abstract public int install();
+  abstract public int remove();
+  abstract public List<Service> getServices();
+  abstract public List<String> getFiles();
+  abstract public List<String> getDocs();
+  abstract public List<String> getConfigs();
 
   /**
    * Factory method for creating an instance of a Package that can reside in
@@ -39,9 +53,9 @@ abstract class PackageInstance {
    * @param name package manager dependent name of a package
    */
   static public PackageInstance getPackageInstance(PackageManager mgr, String name) {
-    PackageInstance pkg = new ManagedPackage()
-    pkg.mgr = mgr
-    pkg.name = name
-    return pkg
+    PackageInstance pkg = new ManagedPackage();
+    pkg.mgr = mgr;
+    pkg.name = name;
+    return pkg;
   }
 }

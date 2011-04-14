@@ -18,7 +18,6 @@
 package org.apache.itest.pmanager
 
 import org.apache.itest.posix.Service
-import org.apache.itest.shell.Shell
 
 class AptCmdLinePackageManager extends PackageManager {
   // FIXME: NB export DEBIAN_FRONTEND=noninteractive
@@ -56,7 +55,7 @@ class AptCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
 
-  public List<PackageInstance> search(String name, String version) {
+  public List<PackageInstance> search(String name) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("apt-cache search --names-only $name").out.each {
       packages.add(PackageInstance.getPackageInstance (this, ((it =~ /^(.*)( - .*)$/)[0][1])))
@@ -64,10 +63,59 @@ class AptCmdLinePackageManager extends PackageManager {
     return packages
   }
 
+  private String translateMeta(String key) {
+    def mapping = [Homepage: "url", Origin: "vendor", Section: "group"];
+    def k = key.trim();
+    return mapping[k] ?: k.toLowerCase();
+  }
+
+  private List parseMetaOutput(PackageInstance p, List<String> text) {
+    def packages = new ArrayList<PackageInstance>();
+    PackageInstance pkg = p;
+    String curMetaKey = "";
+    text.each {
+      if ((it =~ /^ /).find()) {
+        pkg.meta[curMetaKey] <<= "\n$it";
+      } else {
+        def m = (it =~ /(\S+):(.*)/);
+        if (m.size()) {
+          String[] matcher = m[0];
+          if ("Package" == matcher[1] && !p) {
+            pkg = PackageInstance.getPackageInstance(this, matcher[2]);
+            packages.add(pkg);
+          } else {
+            curMetaKey = translateMeta(matcher[1]);
+            pkg.meta[curMetaKey] = matcher[2];
+          }
+        }
+      }
+    }
+
+    (packages.size() == 0 ? [p] : packages).each {
+      it.version = it.meta["version"] ?: it.version;
+      it.arch = it.meta["architecture"] ?: it.arch;
+      if (it.meta["conffiles"]) {
+        it.configs = it.meta["conffiles"].toString().split("\n").collect { lines ->
+          lines.replaceAll(/ [^ ]*$/, "").trim();
+        }.findAll { l -> (l != ""); };
+      }
+    };
+    return packages;
+  }
+
+  public List<PackageInstance> lookup(String name) {
+    return parseMetaOutput(null, shUser.exec("apt-cache show $name").out);
+  }
+
   public int install(PackageInstance pkg) {
     shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y install ${pkg.name}");
+    if (shRoot.getRet() == 0) {
+      pkg.installMessages = shRoot.getOut().join('\n');
+      parseMetaOutput(pkg, shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -s ${pkg.name}").out);
+    }
     return shRoot.getRet();
   }
+
   public int remove(PackageInstance pkg) {
     // All config files need to be removed as well.
     shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y purge ${pkg.name}");
@@ -88,5 +136,18 @@ class AptCmdLinePackageManager extends PackageManager {
   public List<String> getContentList(PackageInstance pkg) {
     shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name}");
     return shUser.out.collect({"$it"});
+  }
+
+  @Override
+  public List<String> getConfigs(PackageInstance pkg) {
+    shUser.exec("""
+    env DEBIAN_FRONTEND=noninteractive dpkg -s ${pkg.name} | sed -ne '/Conffiles:/,/^[^ ]*:/{/:/!s# [^ ]*\$##p}'
+    """);
+    return shUser.out.collect({"$it"});
+  }
+
+  @Override
+  public List<String> getDocs(PackageInstance pkg) {
+    return [];
   }
 }

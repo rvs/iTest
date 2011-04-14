@@ -84,7 +84,15 @@ public abstract class PackageManager {
    * @param version a particular version of the package
    * @return list of matching packages found in all registered repositories (can be empty)
    */
-  abstract public List<PackageInstance> search(String name, String version)
+  abstract public List<PackageInstance> search(String name)
+  /**
+   * Search for a package in all registered repositories
+   *
+   * @param name name of the package (inexact matches are ok)
+   * @param version a particular version of the package
+   * @return list of matching packages found in all registered repositories (can be empty)
+   */
+  abstract public List<PackageInstance> lookup(String name)
   /**
    * Install a given package (from collection of all the packages available in all the repositories)
    *
@@ -122,6 +130,22 @@ public abstract class PackageManager {
    * @return list file and directory names belong to the package.
    */
   abstract public List<String> getContentList(PackageInstance pkg);
+
+  /**
+   * List config files in a given package
+   *
+   * @param pkg a package in question
+   * @return list config file names that belong to the package.
+   */
+  abstract public List<String> getConfigs(PackageInstance pkg);
+
+  /**
+   * List documentation files in a given package
+   *
+   * @param pkg a package in question
+   * @return list documentation file names that belong to the package.
+   */
+  abstract public List<String> getDocs(PackageInstance pkg);
 
   /**
    * type of a package manager. expected to be overwritten by concrete subclasses implementing

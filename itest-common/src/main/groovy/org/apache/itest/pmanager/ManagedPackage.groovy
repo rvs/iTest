@@ -33,6 +33,30 @@ class ManagedPackage extends PackageInstance {
   }
 
   public List<Service> getServices() {
-    return mgr.getServices(this);
+    if (!services && mgr.isInstalled(this)) {
+      services = mgr.getServices(this);
+    }
+    return services;
+  }
+
+  public List<String> getFiles() {
+    if (!files && mgr.isInstalled(this)) {
+      files = mgr.getContentList(this);
+    }
+    return files;
+  }
+
+  public List<String> getConfigs() {
+    if (!configs && mgr.isInstalled(this)) {
+      configs = mgr.getConfigs(this);
+    }
+    return configs;
+  }
+
+  public List<String> getDocs() {
+    if (!docs && mgr.isInstalled(this)) {
+      docs = mgr.getDocs(this);
+    }
+    return docs;
   }
 }
