@@ -24,6 +24,8 @@ import org.apache.commons.logging.LogFactory
 class Shell {
   static private Log LOG = LogFactory.getLog(Shell.class)
 
+  static private final String DEFAULT_SHELL = "/bin/bash -s";
+
   String shell;
   String user;
 
@@ -33,12 +35,16 @@ class Shell {
   int ret;
 
   Shell(String sh) {
-    shell = sh
+    shell = sh;
   }
 
   Shell(String sh, String u) {
-    shell = sh
-    user = u
+    shell = sh;
+    user = u;
+  }
+
+  Shell() {
+    shell = DEFAULT_SHELL;
   }
 
   void setUser(String u) {
