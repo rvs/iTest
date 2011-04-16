@@ -22,6 +22,7 @@ import com.cloudera.itest.shell.Shell
 
 class Service {
   private String svc_name;
+  private List run_levels;
 
   private Shell shRoot = new Shell("/bin/bash -s", "root");
   private Shell sh = new Shell("/bin/bash -s");
@@ -75,5 +76,21 @@ class Service {
    */
   public String getName() {
     return svc_name;
+  }
+  /**
+   * Returns a list of runlevels this service is registered for (we do lazy loading of run level info)
+   * @return list of run levels as strings (we'd use list of integers but there's "S" run level)
+   */
+  public List getRunLevels() {
+    if (!run_levels) {
+      run_levels = [];
+      sh.exec("chkconfig -l $svc_name");
+      (sh.out.join('') =~ /([0-9Ss]):(off|on)/).each {
+        if ("on".equals(it[2])) {
+          run_levels.add(it[1]);
+        }
+      }
+    }
+    return run_levels;
   }
 }

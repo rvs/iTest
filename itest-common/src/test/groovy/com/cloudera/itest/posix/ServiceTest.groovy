@@ -22,13 +22,20 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertEquals
 
 class ServiceTest {
-  private final String name = "ssh";
-  Service ssh = new Service(name);
+  private final String name = "rc.local";
+  Service svc = new Service(name);
 
   @Test
   void testStatus() {
-    println 'Status ' + ssh.status()
-    assertTrue("Expected a not-null and non-empty string as an ssh service status", ssh.status() != null && ssh.status() != "")
-    assertEquals("wrong service name", name, ssh.getName());
+    println 'Status ' + svc.status()
+    assertTrue("Expected a not-null and non-empty string as an ssh service status", svc.status() != null && svc.status() != "")
+    assertEquals("wrong service name", name, svc.getName());
+  }
+
+  @Test
+  void testRunLevels() {
+    List<String> l = svc.getRunLevels();
+    assertTrue("Expected a non-zero size list of registered run levels for ssh service",
+               0 != l.size());
   }
 }
