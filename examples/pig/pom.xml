@@ -133,7 +133,7 @@
             <configuration>
               <source>
                 project.properties['lzo.jar'] =
-                  org.apache.itest.JarContent.getJarName(
+                  com.cloudera.itest.JarContent.getJarName(
                       "${HADOOP_HOME}/lib", 'hadoop.*lzo.*.jar');
                 if ( project.properties['lzo.jar'] == null ) {
                     throw new IOException ("hadoop-lzo.jar isn't found");

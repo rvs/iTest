@@ -134,7 +134,7 @@
       </dependency>
       <!-- Import of iTest artifact serving out-of-the-jar convenience methods -->
       <dependency>
-        <groupId>org.apache.itest</groupId>
+        <groupId>com.cloudera.itest</groupId>
         <artifactId>itest-common</artifactId>
         <version>1.0-SNAPSHOT</version>
         <scope>test</scope>
@@ -240,7 +240,7 @@
     </dependency>
     <!-- Turn them on for all children -->
     <dependency>
-      <groupId>org.apache.itest</groupId>
+      <groupId>com.cloudera.itest</groupId>
       <artifactId>itest-common</artifactId>
       <scope>test</scope>
     </dependency>
@@ -301,12 +301,12 @@
           <workingDirectory>${project.build.directory}</workingDirectory>
           <systemPropertyVariables>
              <HADOOP_HOME>${HADOOP_HOME}</HADOOP_HOME>
-             <log4j.configuration>org.apache.itest.log4j.configuration</log4j.configuration>
-             <org.apache.itest.log4j.level>INFO</org.apache.itest.log4j.level>
+             <log4j.configuration>com.cloudera.itest.log4j.configuration</log4j.configuration>
+             <com.cloudera.itest.log4j.level>INFO</com.cloudera.itest.log4j.level>
           </systemPropertyVariables>
           <additionalClasspathElements>
             <additionalClasspathElement>${HADOOP_CONF_DIR}</additionalClasspathElement>
-            <org.apache.itest.JUnitUtils.results.dir>${project.build.directory}/failsafe-reports</org.apache.itest.JUnitUtils.results.dir>
+            <com.cloudera.itest.JUnitUtils.results.dir>${project.build.directory}/failsafe-reports</com.cloudera.itest.JUnitUtils.results.dir>
           </additionalClasspathElements>
         </configuration>
         <executions>
@@ -339,7 +339,7 @@
             </goals>
             <configuration>
               <source><![CDATA[
-                import org.apache.itest.*
+                import com.cloudera.itest.*
  
                 def nm   = project.properties['org.apache.maven-dependency-plugin.artifactId'];
                 def vers = project.properties['org.apache.maven-dependency-plugin.version'];
