@@ -17,8 +17,6 @@
  */
 package com.cloudera.itest.pmanager
 
-import com.cloudera.itest.posix.Service
-
 class AptCmdLinePackageManager extends PackageManager {
   // FIXME: NB export DEBIAN_FRONTEND=noninteractive
   static String type  = "apt";
@@ -55,7 +53,7 @@ class AptCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
 
-  public List<PackageInstance> search(String name, String version) {
+  public List<PackageInstance> search(String name) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("apt-cache search --names-only $name").out.each {
       packages.add(PackageInstance.getPackageInstance (this, ((it =~ /^(.*)( - .*)$/)[0][1])))
@@ -63,10 +61,17 @@ class AptCmdLinePackageManager extends PackageManager {
     return packages
   }
 
+  public List<PackageInstance> lookup(String name) {
+    shUser.exec("apt-cache show $name");
+    return (shUser.getRet() == 0) ? DEBPackage.parseMetaOutput(null, shUser.out, this) : [];
+  }
+
   public int install(PackageInstance pkg) {
     shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y install ${pkg.name}");
+    pkg.installMessages = shRoot.getOut().join('\n');
     return shRoot.getRet();
   }
+
   public int remove(PackageInstance pkg) {
     // All config files need to be removed as well.
     shRoot.exec("env DEBIAN_FRONTEND=noninteractive apt-get -y purge ${pkg.name}");
@@ -76,16 +81,5 @@ class AptCmdLinePackageManager extends PackageManager {
   public boolean isInstalled(PackageInstance pkg) {
     def text = shUser.exec("env DEBIAN_FRONTEND=noninteractive apt-get -s remove ${pkg.name}").out.join('\n')
     return (text =~ /\nRemv ${pkg.name} /).find()
-  }
-
-  public List<Service> getServices(PackageInstance pkg) {
-    shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name} | sed -ne '/^.etc.init.d./s#^.etc.init.d.##p'")
-    return shUser.out.collect({new Service("$it")})
-  }
-
-  @Override
-  public List<String> getContentList(PackageInstance pkg) {
-    shUser.exec("env DEBIAN_FRONTEND=noninteractive dpkg -L ${pkg.name}");
-    return shUser.out.collect({"$it"});
   }
 }

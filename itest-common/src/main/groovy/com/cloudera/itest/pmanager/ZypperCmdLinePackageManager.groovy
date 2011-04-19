@@ -47,7 +47,7 @@ class ZypperCmdLinePackageManager extends PackageManager {
     return shRoot.getRet();
   }
 
-  public List<PackageInstance> search(String name, String version) {
+  public List<PackageInstance> search(String name) {
     def packages = new ArrayList<PackageInstance>();
     shUser.exec("zypper search $name").out.each {
       packages.add(PackageInstance.getPackageInstance (this, ((it =~ /^(.*|)(.*)(|.*)$/)[0][2])))
@@ -55,8 +55,14 @@ class ZypperCmdLinePackageManager extends PackageManager {
     return packages
   }
 
+  public List<PackageInstance> lookup(String name) {
+    shUser.exec("zypper info $name");
+    return (shUser.getRet() == 0) ? RPMPackage.parseMetaOutput(null, shUser.out, this) : [];
+  }
+
   public int install(PackageInstance pkg) {
     shRoot.exec("zypper -q -n install -l -y ${pkg.name}");
+    pkg.installMessages = shRoot.getOut().join('\n');
     return shRoot.getRet();
   }
 
@@ -68,16 +74,5 @@ class ZypperCmdLinePackageManager extends PackageManager {
   public boolean isInstalled(PackageInstance pkg) {
     def text = shUser.exec("zypper -q -n info ${pkg.name}").out.join('\n')
     return (text =~ /(?m)^Installed: Yes$/).find()
-  }
-
-  public List<Service> getServices(PackageInstance pkg) {
-    shUser.exec("rpm -ql ${pkg.name} | sed -ne '/^.etc.rc.d./s#^.etc.rc.d.##p'")
-    return shUser.out.collect({new Service("$it")})
-  }
-
-  @Override
-  List<String> getContentList(PackageInstance pkg) {
-    shUser.exec("rpm -ql ${pkg.name}");
-    return shUser.out.collect({"$it"});
   }
 }

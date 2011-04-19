@@ -19,7 +19,7 @@ package com.cloudera.itest.pmanager
 
 import com.cloudera.itest.posix.Service
 
-class ManagedPackage extends PackageInstance {
+abstract class ManagedPackage extends PackageInstance {
   public boolean isInstalled() {
     return mgr.isInstalled(this);
   }
@@ -30,9 +30,5 @@ class ManagedPackage extends PackageInstance {
 
   public int remove() {
     return mgr.remove(this);
-  }
-
-  public List<Service> getServices() {
-    return mgr.getServices(this);
   }
 }

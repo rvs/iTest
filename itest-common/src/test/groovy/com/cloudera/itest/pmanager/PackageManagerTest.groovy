@@ -29,10 +29,25 @@ class PackageManagerTest {
 
   @Test
   void searchForGcc() {
-    List<PackageInstance> pkgs = pmgr.search("gcc", "")
+    List<PackageInstance> pkgs = pmgr.search("gcc")
 
     assertFalse("gcc non found in repository", pkgs.size() == 0)
     assertEquals("package name searched for differs from the result", "gcc", pkgs.get(0).name)
+  }
+
+  @Test
+  void testLookupGcc() {
+    List<PackageInstance> pkgs = pmgr.lookup("gcc");
+
+    assertFalse("gcc non found in repository", pkgs.size() == 0);
+    assertFalse("can not get description for the gcc package", pkgs.get(0).getMeta()["description"].length() == 0);
+  }
+
+  @Test
+  void installBash() {
+    PackageInstance bash_pkg = PackageInstance.getPackageInstance(pmgr, "bash");
+
+    assertTrue("can not install pacakge bash", (bash_pkg.install() == 0));
   }
 
   @Test
@@ -45,7 +60,7 @@ class PackageManagerTest {
   @Test
   void testGetServicesCron() {
     PackageInstance cron = PackageInstance.getPackageInstance(pmgr, "cron")
-    List<Service> svcs = pmgr.getServices(cron)
+    Map<String, Service> svcs = pmgr.getServices(cron)
 
     assertTrue("cron package is expected to provide at least one service", svcs.size() != 0)
   }
@@ -57,6 +72,25 @@ class PackageManagerTest {
     list.each { println it};
 
     assertTrue("cron package is expected to contain at least ten files", list.size() > 10);
+  }
+
+  @Test
+  void testGetDocs() {
+    PackageInstance cron = PackageInstance.getPackageInstance(pmgr, "cron");
+    List<String> list = pmgr.getDocs(cron);
+    list.each { println it};
+
+    assertTrue("checking for docs in cron package",
+               list.size() > ((pmgr.getType() == "apt") ? -1 : 0));
+  }
+
+  @Test
+  void testGetConfigs() {
+    PackageInstance cron = PackageInstance.getPackageInstance(pmgr, "cron");
+    List<String> list = pmgr.getConfigs(cron);
+    list.each { println it};
+
+    assertTrue("cron package is expected to contain at least a few config files", list.size() > 0);
   }
 
   @Test
