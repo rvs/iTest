@@ -1,4 +1,4 @@
-log4j.rootLogger=${org.apache.itest.log4j.level},console
+log4j.rootLogger=${com.cloudera.itest.log4j.level},console
 log4j.threshhold=ALL
 log4j.appender.console=org.apache.log4j.ConsoleAppender
 log4j.appender.console.target=System.err
