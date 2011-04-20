@@ -109,12 +109,12 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>libs-snapshot</id>
+      <id>azov01.sf.cloudera.com</id>
       <name>Internal Snapshots</name>
       <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</url>
     </snapshotRepository>
     <repository>
-      <id>libs-release</id>
+      <id>azov01.sf.cloudera.com</id>
       <name>Internal Releases</name>
       <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</url>
     </repository>
