@@ -7,11 +7,11 @@
   <parent>
       <groupId>com.cloudera.itest</groupId>
       <artifactId>smoke-tests</artifactId>
-      <version>1.0-cdh3u0-SNAPSHOT</version>
+      <version>1.0-cdh3u0</version>
   </parent>
   <groupId>com.cloudera.itest</groupId>
   <artifactId>hadooplong-test.smoke-tests</artifactId>
-  <version>${hadooplong.version}</version>
+  <version>1.0</version>
   <name>hadooplongevity</name>
 
   <properties>
@@ -20,7 +20,7 @@
     <org.apache.maven-dependency-plugin.version>${hadooplong.version}</org.apache.maven-dependency-plugin.version>
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
     <org.apache.maven-dependency-plugin.pattern></org.apache.maven-dependency-plugin.pattern>
-    <hadooplong.version>1.0-cdh3u0-SNAPSHOT</hadooplong.version>
+    <hadooplong.version>1.0-cdh3u0</hadooplong.version>
   </properties>
 
   <dependencies>

@@ -6,12 +6,12 @@
   <parent>
       <groupId>com.cloudera.itest</groupId>
       <artifactId>smoke-tests</artifactId>
-      <version>1.0-cdh3u0-SNAPSHOT</version>
+      <version>1.0-cdh3u0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.cloudera.itest</groupId>
   <artifactId>ooziesmokes.smoke-tests</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>ooziesmokes</name>
 
   <properties>

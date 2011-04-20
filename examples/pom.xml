@@ -6,7 +6,7 @@
   <groupId>com.cloudera.itest</groupId>
   <artifactId>smoke-tests</artifactId>
   <packaging>pom</packaging>
-  <version>1.0-cdh3u0-SNAPSHOT</version>
+  <version>1.0-cdh3u0</version>
   <name>hadoop-stack-validation</name>
 
   <properties>
@@ -68,19 +68,19 @@
     <!--
       BOM definitions
     -->
-    <itest-conf.version>1.0-SNAPSHOT</itest-conf.version>
-    <itest-common.version>1.0-SNAPSHOT</itest-common.version>
+    <itest-conf.version>1.0</itest-conf.version>
+    <itest-common.version>1.0</itest-common.version>
     <hadoop.version>0.20.2-cdh3u0</hadoop.version>
-    <hadoop-smoke.version>0.20.2-cdh3u0-SNAPSHOT</hadoop-smoke.version>
-    <flume-smoke.version>0.9.3-cdh3u0-SNAPSHOT</flume-smoke.version>
-    <hbase-smoke.version>0.90.1-cdh3u0-SNAPSHOT</hbase-smoke.version>
-    <hive-smoke.version>0.7.0-cdh30-SNAPSHOT</hive-smoke.version>
-    <oozie-smoke.version>2.3.0-cdh3u0-SNAPSHOT</oozie-smoke.version>
-    <package-smoke.version>1.0-cdh3u0-SNAPSHOT</package-smoke.version>
+    <hadoop-smoke.version>0.20.2-cdh3u0</hadoop-smoke.version>
+    <flume-smoke.version>0.9.3-cdh3u0</flume-smoke.version>
+    <hbase-smoke.version>0.90.1-cdh3u0</hbase-smoke.version>
+    <hive-smoke.version>0.7.0-cdh30</hive-smoke.version>
+    <oozie-smoke.version>2.3.0-cdh3u0</oozie-smoke.version>
+    <package-smoke.version>1.0-cdh3u0</package-smoke.version>
     <pig-smoke.version>0.8.0-SNAPSHOT</pig-smoke.version>
     <pig.version>0.8.0-cdh3u0</pig.version>
     <sqoop.version>1.2.0-cdh3u0</sqoop.version>
-    <sqoop-integration.version>1.2.0-cdh3u0-SNAPSHOT</sqoop-integration.version>
+    <sqoop-integration.version>1.2.0-cdh3u0</sqoop-integration.version>
     <!--
       End of BOM definitions
     -->
