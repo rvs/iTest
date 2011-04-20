@@ -12,15 +12,21 @@
   <!--        for a simple reason that it depens on us. Perhaps we have to split   -->
   <!--        the parent POM into a thin bootstrapping layer and a real parent POM -->
   <properties>
-    <maven.repository>https://repository.cloudera.com/content/repositories/testsnaps/</maven.repository>
+    <maven.internal.snapshots>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</maven.internal.snapshots>
+    <maven.internal.releases>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</maven.internal.releases>
   </properties>
 
   <distributionManagement>
     <snapshotRepository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>${maven.repository}</url>
+      <id>azov01.sf.cloudera.com</id>
+      <name>Internal Snapshots</name>
+      <url>${maven.internal.snapshots}</url>
     </snapshotRepository>
+    <repository>
+      <id>azov01.sf.cloudera.com</id>
+      <name>Internal Releases</name>
+      <url>${maven.internal.releases}</url>
+    </repository>
   </distributionManagement>
 
   <build>

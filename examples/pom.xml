@@ -61,7 +61,9 @@
     <!--
         MAINTAINER property: not to be overridden by users
     -->
-    <maven.repository>https://repository.cloudera.com/content/repositories/testsnaps/</maven.repository>
+    <maven.internal.snapshots>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</maven.internal.snapshots>
+    <maven.internal.releases>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</maven.internal.releases>
+    <maven.releases>https://repository.cloudera.com/content/groups/cdh-releases-rcs/</maven.releases>
 
     <!--
       BOM definitions
@@ -86,29 +88,37 @@
 
   <repositories>
     <repository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+      <id>libs-snapshot</id>
+      <name>Internal Snapshots</name>
+      <url>${maven.internal.snapshots}</url>
     </repository>
     <repository>
-      <id>snaps</id>
-      <name>Cloudera Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/snapshots/</url>
+      <id>libs-release</id>
+      <name>Internal Releases</name>
+      <url>${maven.internal.releases}</url>
     </repository>
     <repository>
       <id>releases</id>
       <name>Cloudera Releases</name>
-      <url>https://repository.cloudera.com/content/groups/cdh-releases-rcs/</url>
+      <url>${maven.releases}</url>
     </repository>
   </repositories>
 
+  <scm>
+    <connection>scm:git:git://github.com/cloudera/iTest.git</connection>
+  </scm>
+
   <distributionManagement>
-    <!-- use the following if you ARE using a snapshot version. -->
     <snapshotRepository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>${maven.repository}</url>
+      <id>azov01.sf.cloudera.com</id>
+      <name>Internal Snapshots</name>
+      <url>${maven.internal.snapshots}</url>
     </snapshotRepository>
+    <repository>
+      <id>azov01.sf.cloudera.com</id>
+      <name>Internal Releases</name>
+      <url>${maven.internal.releases}</url>
+    </repository>
   </distributionManagement>
 
   <!--
