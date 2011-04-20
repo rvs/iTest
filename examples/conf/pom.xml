@@ -16,6 +16,10 @@
     <maven.internal.releases>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</maven.internal.releases>
   </properties>
 
+  <scm>
+    <connection>scm:git:git://github.com/cloudera/iTest.git</connection>
+  </scm>
+
   <distributionManagement>
     <snapshotRepository>
       <id>azov01.sf.cloudera.com</id>
