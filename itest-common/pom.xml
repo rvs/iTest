@@ -105,12 +105,20 @@
     </extensions>
   </build>
 
+  <scm>
+    <connection>scm:git:git://github.com/cloudera/iTest.git</connection>
+  </scm>
+
   <distributionManagement>
-    <!-- use the following if you ARE using a snapshot version. -->
+    <snapshotRepository>
+      <id>libs-snapshot</id>
+      <name>Internal Snapshots</name>
+      <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</url>
+    </snapshotRepository>
     <repository>
-      <id>testsnaps</id>
-      <name>Test Snapshots</name>
-      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
+      <id>libs-release</id>
+      <name>Internal Releases</name>
+      <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</url>
     </repository>
     <site>
       <id>github-project-site</id>
