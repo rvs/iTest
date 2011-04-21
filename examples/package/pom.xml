@@ -20,12 +20,12 @@
     <repository>
       <id>libs-snapshot</id>
       <name>Internal Snapshots</name>
-      <url>${maven.internal.snapshots}</url>
+      <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</url>
     </repository>
     <repository>
       <id>libs-release</id>
       <name>Internal Releases</name>
-      <url>${maven.internal.releases}</url>
+      <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</url>
     </repository>
   </repositories>
 
@@ -39,9 +39,6 @@
     <org.apache.maven-dependency-plugin.output>${project.build.directory}</org.apache.maven-dependency-plugin.output>
 
     <org.apache.maven-failsafe-plugin.testInclude>**/PackagesSuite*</org.apache.maven-failsafe-plugin.testInclude>
-
-    <maven.internal.snapshots>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</maven.internal.snapshots>
-    <maven.internal.releases>http://azov01.sf.cloudera.com:8081/artifactory/libs-release-local</maven.internal.releases>
   </properties>
 
   <dependencies>
@@ -49,6 +46,7 @@
       <groupId>com.cloudera.itest</groupId>
       <artifactId>packagesmoke</artifactId>
       <version>${package-smoke.version}</version>
+      <type>test-jar</type>
     </dependency>
   </dependencies>
 
