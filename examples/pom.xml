@@ -74,7 +74,7 @@
     <hadoop-smoke.version>0.20.2-cdh3u1-SNAPSHOT</hadoop-smoke.version>
     <flume-smoke.version>0.9.3-cdh3u1-SNAPSHOT</flume-smoke.version>
     <hbase-smoke.version>0.90.1-cdh3u1-SNAPSHOT</hbase-smoke.version>
-    <hive-smoke.version>0.7.0-cdh31-SNAPSHOT</hive-smoke.version>
+    <hive-smoke.version>0.7.0-cdh3u1-SNAPSHOT</hive-smoke.version>
     <oozie-smoke.version>2.3.0-cdh3u1-SNAPSHOT</oozie-smoke.version>
     <package-smoke.version>1.0-cdh3u1-SNAPSHOT</package-smoke.version>
     <pig-smoke.version>0.8.0-SNAPSHOT</pig-smoke.version>
