@@ -7,11 +7,11 @@
   <parent>
       <groupId>com.cloudera.itest</groupId>
       <artifactId>smoke-tests</artifactId>
-      <version>1.0-cdh3u0</version>
+      <version>1.0-cdh3u1-SNAPSHOT</version>
   </parent>
   <groupId>com.cloudera.itest</groupId>
   <artifactId>packagesmokes.smoke-tests</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <name>packagesmokes</name>
 
   <!-- FIXME: we really have to have a way to bootstrap from a Maven repo  -->
