@@ -39,8 +39,9 @@ class RPMPackage extends ManagedPackage {
     PackageInstance pkg = givenPkg;
     String curMetaKey = "";
     text.each {
-      if (curMetaKey == "description") {
-        pkg.meta[curMetaKey] <<= "\n$it";
+      // theoretically RPM can generate multiline output for any field, but we are only allowing description & summary
+      if (curMetaKey == "description" || ((it =~ /^\s+: /).find() && curMetaKey == "summary")) {
+        pkg.meta[curMetaKey] <<= "\n${it.replaceAll(/^\s+:/,'')}";
       } else {
         def m = (it =~ /(\S+) *: *(.+)/);
         if (m.size()) {
