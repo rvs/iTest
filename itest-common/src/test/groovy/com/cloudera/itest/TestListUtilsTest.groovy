@@ -18,12 +18,23 @@
 package com.cloudera.itest
 
 import org.junit.Test
+import static org.junit.Assert.assertTrue
 
 public class TestListUtilsTest {
   @Test
   void testListUtils() {
-    def prefix = 'tmp'
-    TestListUtils.touchTestFiles(prefix, 'dir/under/which/file/created.class');
+    def prefix = 'tmp';
+    def fileName = 'dir/under/which/file/created';
+    File expectedFile = new File("${prefix}/${fileName}.touched");
+
+    TestListUtils.touchTestFiles(prefix, "${fileName}.class");
+    assertTrue("${fileName}.touched is missing", expectedFile.exists());
+    expectedFile.delete();
+
+    TestListUtils.touchTestFiles(prefix, "${fileName}.xml");
+    assertTrue("only .class files are expected to be created",
+               expectedFile.getParentFile().listFiles().size() == 0);
+
     File p = new File(prefix);
     p.deleteDir();
   }

@@ -27,6 +27,10 @@ public class TestListUtils {
   static final def FS = System.getProperty('file.separator', '/');
 
   static void touchTestFiles(String dirPrefix, String pathName) throws IOException {
+    if (!pathName.endsWith('.class')) {
+      return;
+    }
+
     List<String> pathArray = pathName.split(FS).toList();
     def prefix =  "";
     if (dirPrefix != null)
