@@ -84,7 +84,7 @@ class Service {
   public List getRunLevels() {
     if (!run_levels) {
       run_levels = [];
-      sh.exec("chkconfig -l $svc_name");
+      sh.exec("chkconfig --list $svc_name");
       (sh.out.join('') =~ /([0-9Ss]):(off|on)/).each {
         if ("on".equals(it[2])) {
           run_levels.add(it[1]);
