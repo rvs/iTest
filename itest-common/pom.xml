@@ -109,9 +109,9 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>azov01.sf.cloudera.com</id>
+      <id>cloudera-snapshots</id>
       <name>Internal Snapshots</name>
-      <url>http://azov01.sf.cloudera.com:8081/artifactory/libs-snapshot-local</url>
+      <url>https://repository.cloudera.com/content/repositories/testsnaps/</url>
     </snapshotRepository>
     <repository>
       <id>azov01.sf.cloudera.com</id>
