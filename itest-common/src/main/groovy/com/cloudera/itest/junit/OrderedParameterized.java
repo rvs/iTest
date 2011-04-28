@@ -1,4 +1,7 @@
 /*
+ * Copyright (c) 2011, Cloudera, Inc. All Rights Reserved.
+*/
+/*
 JUnit
 
 Common Public License - v 1.0
