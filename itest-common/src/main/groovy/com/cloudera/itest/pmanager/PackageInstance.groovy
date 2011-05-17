@@ -31,6 +31,7 @@ abstract class PackageInstance {
   protected List<String> docs;
   protected List<String> configs;
   protected Map<String, Service> services;
+  protected Map<String, String> deps;
 
   /**
    * Check if this package is installed on the system
@@ -85,6 +86,15 @@ abstract class PackageInstance {
    * @return list config file names that belong to the package.
    */
   abstract public List<String> getConfigs();
+  /**
+   * Get a list of dependencies for this package. Dependency information is stored in a map with
+   * keys being names of the objects and values being version information in the following format:
+   *     [version operator] version
+   * E.g. >= 3.3.1+10
+   *
+   * @return map of objects (mostly packaged) this package depends on
+   */
+  abstract public Map<String, String> getDeps();
 
   /**
    * Factory method for creating an instance of a Package that can reside in

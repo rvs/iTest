@@ -99,4 +99,17 @@ class DEBPackage extends ManagedPackage {
   public List<String> getDocs() {
     return [];
   }
+
+  Map<String, String> getDeps() {
+    Map<String, String> res = [:];
+    // sample input: sun-java6-jre | sun-java6-sdk, hadoop-zookeeper (= 3.3.1+8), hadoop-0.20 (>= 0.20.2+700)
+    // NOTE: we currently do NOT support alternative specification i.e. sun-java6-jre | sun-java6-sdk
+    shUser.exec("dpkg -s $name | sed -ne 's#^Depends: ##p'").getOut().get(0).split(',').each {
+      def matcher = (it =~ /(\S+)( \(.+\))*/);
+      if (matcher.size() == 1) {
+        res[matcher[0][1]] = (matcher[0][2] ?: "").replaceAll(/( |\(|\))/, '');
+      }
+    }
+    return res;
+  }
 }

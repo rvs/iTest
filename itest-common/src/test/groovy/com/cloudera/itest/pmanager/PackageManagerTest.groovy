@@ -82,6 +82,16 @@ class PackageManagerTest {
   }
 
   @Test
+  void testGetDeps() {
+    PackageInstance bash = PackageInstance.getPackageInstance(pmgr, "bash");
+    Map<String, String> deps = bash.getDeps();
+
+    assertTrue("package bash has 0 dependencies. weird.",
+               deps.size() > 0);
+  }
+
+
+  @Test
   void testGetConfigs() {
     PackageInstance cron = PackageInstance.getPackageInstance(pmgr, "cron");
     List<String> list = pmgr.getConfigs(cron);

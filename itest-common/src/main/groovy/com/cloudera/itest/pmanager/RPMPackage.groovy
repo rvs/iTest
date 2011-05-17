@@ -111,4 +111,15 @@ Description: %{DESCRIPTION}
     shUser.exec("rpm -qd $name");
     return shUser.out.collect({"$it"});
   }
+
+  Map<String, String> getDeps() {
+    Map<String, String> res = [:];
+    shUser.exec("rpm -qR $name").getOut().each {
+      def matcher = (it =~ /(\S+)( [><=][><=] \S+)*/);
+      if (!(it =~ /(.*)/).find() && matcher.size() == 1) {
+        res[matcher[0][1]] = (matcher[0][2] ?: "").replaceAll(/( |\(|\))/, '');
+      }
+    }
+    return res;
+  }
 }
